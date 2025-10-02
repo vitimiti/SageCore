@@ -6,6 +6,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using System.Buffers.Binary;
 using System.IO.Compression;
 using SageCore.Extensions;
 
@@ -131,6 +132,42 @@ public sealed class SageCompressionStream : Stream
         }
     }
 
+    public static int CalculateUncompressedSize(Stream stream)
+    {
+        ArgumentNullException.ThrowIfNull(stream);
+        if (!stream.CanSeek)
+        {
+            throw new ArgumentException(
+                "The stream must support seeking to calculate uncompressed size.",
+                nameof(stream)
+            );
+        }
+
+        if (!stream.CanRead)
+        {
+            throw new ArgumentException("The stream must be readable to calculate uncompressed size.", nameof(stream));
+        }
+
+        if (stream.Length < 8)
+        {
+            throw new InvalidDataException("The stream is too short to contain valid compressed data.");
+        }
+
+        var originalPosition = stream.Position;
+        stream.Position = 0;
+
+        try
+        {
+            using BinaryReader reader = new(stream, LegacyEncodings.Ansi, leaveOpen: true);
+            _ = reader.ReadBytes(4); // Skip magic bytes
+            return reader.ReadInt32();
+        }
+        finally
+        {
+            stream.Position = originalPosition;
+        }
+    }
+
     public override bool CanRead => CompressionMode is CompressionMode.Decompress && !_disposed && _baseStream.CanRead;
 
     public override bool CanSeek => false;
@@ -187,7 +224,15 @@ public sealed class SageCompressionStream : Stream
             _ => throw new InvalidOperationException("Unsupported compression type for decompression."),
         };
 
-        return decompressionStream.Read(buffer, offset, count);
+        // Read and discard the header (magic bytes + uncompressed size).
+        using (BinaryReader reader = new(decompressionStream, LegacyEncodings.Ansi, leaveOpen: true))
+        {
+            _ = reader.ReadBytes(4); // Skip magic bytes
+            _ = reader.ReadInt32(); // Skip uncompressed size
+        }
+
+        // The first 8 bytes have been read for the header, so we need to adjust the buffer accordingly.
+        return decompressionStream.Read(buffer, offset + 8, count - 8);
     }
 
     public override void Write(byte[] buffer, int offset, int count)
@@ -197,6 +242,14 @@ public sealed class SageCompressionStream : Stream
         ArgumentOutOfRangeException.ThrowIfNegative(offset);
         ArgumentOutOfRangeException.ThrowIfNegative(count);
         ArgumentOutOfRangeException.ThrowIfGreaterThan(offset + count, buffer.Length);
+
+        if (count < 8)
+        {
+            throw new ArgumentException(
+                "At least 8 bytes must be written to determine compression type and data length.",
+                nameof(count)
+            );
+        }
 
         if (!CanWrite)
         {
@@ -234,7 +287,16 @@ public sealed class SageCompressionStream : Stream
             _ => throw new InvalidOperationException("Unsupported compression type for compression."),
         };
 
-        compressionStream.Write(buffer, offset, count);
+        // Write the header (magic bytes + uncompressed size).
+        var magicBytes = GetMagicBytes(CompressionType);
+        using (BinaryWriter writer = new(compressionStream, LegacyEncodings.Ansi, leaveOpen: true))
+        {
+            writer.Write(magicBytes);
+            writer.Write(count);
+        }
+
+        // The first 8 bytes are used for the header, so we need to adjust the buffer accordingly.
+        compressionStream.Write(buffer, offset + 8, count - 8);
     }
 
     public override void Flush()
@@ -263,4 +325,24 @@ public sealed class SageCompressionStream : Stream
         _disposed = true;
         base.Dispose(disposing);
     }
+
+    private static byte[] GetMagicBytes(CompressionType compressionType) =>
+        compressionType switch
+        {
+            CompressionType.None => [],
+            CompressionType.RefPack => "EAR\0"u8.ToArray(),
+            CompressionType.NoxLzh => "NOX\0"u8.ToArray(),
+            CompressionType.ZLib1 => "ZL1\0"u8.ToArray(),
+            CompressionType.ZLib2 => "ZL2\0"u8.ToArray(),
+            CompressionType.ZLib3 => "ZL3\0"u8.ToArray(),
+            CompressionType.ZLib4 => "ZL4\0"u8.ToArray(),
+            CompressionType.ZLib5 => "ZL5\0"u8.ToArray(),
+            CompressionType.ZLib6 => "ZL6\0"u8.ToArray(),
+            CompressionType.ZLib7 => "ZL7\0"u8.ToArray(),
+            CompressionType.ZLib8 => "ZL8\0"u8.ToArray(),
+            CompressionType.ZLib9 => "ZL9\0"u8.ToArray(),
+            CompressionType.BinaryTree => "EAB\0"u8.ToArray(),
+            CompressionType.HuffmanWithRunlength => "EAH\0"u8.ToArray(),
+            _ => throw new InvalidOperationException("Unsupported compression type for magic bytes."),
+        };
 }
