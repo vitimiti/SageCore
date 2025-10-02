@@ -6,9 +6,9 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-using System.Buffers.Binary;
 using System.IO.Compression;
 using SageCore.Extensions;
+using SageCore.Io.Compression.Eac;
 
 namespace SageCore.Io.Compression;
 
@@ -57,6 +57,24 @@ public sealed class SageCompressionStream : Stream
             }
         }
     }
+
+    public override bool CanRead => CompressionMode is CompressionMode.Decompress && !_disposed && _baseStream.CanRead;
+
+    public override bool CanSeek => false;
+
+    public override bool CanWrite => CompressionMode is CompressionMode.Compress && !_disposed && _baseStream.CanWrite;
+
+    public override long Length => _baseStream.Length;
+
+    public override long Position
+    {
+        get => _baseStream.Position;
+        set => throw new NotSupportedException("Setting the position of a compression stream is not supported.");
+    }
+
+    public CompressionMode CompressionMode { get; }
+
+    public CompressionType CompressionType { get; }
 
     public static bool IsDataCompressed(Stream stream)
     {
@@ -168,24 +186,6 @@ public sealed class SageCompressionStream : Stream
         }
     }
 
-    public override bool CanRead => CompressionMode is CompressionMode.Decompress && !_disposed && _baseStream.CanRead;
-
-    public override bool CanSeek => false;
-
-    public override bool CanWrite => CompressionMode is CompressionMode.Compress && !_disposed && _baseStream.CanWrite;
-
-    public override long Length => _baseStream.Length;
-
-    public override long Position
-    {
-        get => _baseStream.Position;
-        set => throw new NotSupportedException("Setting the position of a compression stream is not supported.");
-    }
-
-    public CompressionMode CompressionMode { get; }
-
-    public CompressionType CompressionType { get; }
-
     public override void SetLength(long value) =>
         throw new NotSupportedException("Setting the length of a compression stream is not supported.");
 
@@ -205,10 +205,17 @@ public sealed class SageCompressionStream : Stream
             throw new NotSupportedException("Reading is only supported in decompression mode.");
         }
 
+        if (CompressionType is CompressionType.None)
+        {
+            return _baseStream.Read(buffer, offset, count);
+        }
+
         using Stream decompressionStream = CompressionType switch
         {
-            CompressionType.None => throw new InvalidOperationException("The stream is not compressed."),
-            CompressionType.RefPack => throw new NotImplementedException(),
+            CompressionType.None => throw new InvalidOperationException(
+                "The stream is not compressed and somehow reached the decompression stage."
+            ),
+            CompressionType.RefPack => new RefPackStream(_baseStream, CompressionMode.Decompress, leaveOpen: true),
             CompressionType.NoxLzh => throw new NotImplementedException(),
             CompressionType.ZLib1
             or CompressionType.ZLib2
@@ -243,6 +250,12 @@ public sealed class SageCompressionStream : Stream
         ArgumentOutOfRangeException.ThrowIfNegative(count);
         ArgumentOutOfRangeException.ThrowIfGreaterThan(offset + count, buffer.Length);
 
+        if (CompressionType is CompressionType.None)
+        {
+            _baseStream.Write(buffer, offset, count);
+            return;
+        }
+
         if (count < 8)
         {
             throw new ArgumentException(
@@ -256,15 +269,9 @@ public sealed class SageCompressionStream : Stream
             throw new NotSupportedException("Writing is only supported in compression mode.");
         }
 
-        if (CompressionType is CompressionType.None)
-        {
-            _baseStream.Write(buffer, offset, count);
-            return;
-        }
-
         using Stream compressionStream = CompressionType switch
         {
-            CompressionType.RefPack => throw new NotImplementedException(),
+            CompressionType.RefPack => new RefPackStream(_baseStream, CompressionMode.Compress, leaveOpen: true),
             CompressionType.NoxLzh => throw new NotImplementedException(),
             CompressionType.ZLib1
             or CompressionType.ZLib2
