@@ -11,24 +11,13 @@ using SageCore.Extensions;
 
 namespace SageCore.Io.Compression.Eac;
 
-/// <summary>
-/// Represents a stream that can be used for reading and writing compressed data using the RefPack algorithm.
-/// </summary>
-public sealed class RefPackStream : Stream
+internal sealed class RefPackStream : Stream
 {
     private readonly Stream _baseStream;
     private readonly bool _leaveOpen;
 
     private bool _disposed;
 
-    /// <summary>
-    /// Initializes a new instance of the <see cref="RefPackStream"/> class with the specified stream and compression mode.
-    /// </summary>
-    /// <param name="stream">The stream to read from or write to.</param>
-    /// <param name="compressionMode">The compression mode to use (compress or decompress).</param>
-    /// <param name="leaveOpen">If set to <see langword="true"/>, the underlying stream is left open after the <see cref="RefPackStream"/> is disposed; otherwise, it is closed.</param>
-    /// <exception cref="ArgumentNullException"><paramref name="stream"/> is <see langword="null"/>.</exception>
-    /// <exception cref="ArgumentException"><paramref name="stream"/> does not support seeking.-or-<paramref name="compressionMode"/> is <see cref="CompressionMode.Compress"/> and <paramref name="stream"/> is not writable.-or-<paramref name="compressionMode"/> is <see cref="CompressionMode.Decompress"/> and <paramref name="stream"/> is not readable.</exception>
     public RefPackStream(Stream stream, CompressionMode compressionMode, bool leaveOpen = false)
     {
         ArgumentNullException.ThrowIfNull(stream);
@@ -53,51 +42,22 @@ public sealed class RefPackStream : Stream
         CompressionMode = compressionMode;
     }
 
-    /// <summary>
-    /// Gets a value indicating whether the current stream supports reading.
-    /// </summary>
     public override bool CanRead => CompressionMode is CompressionMode.Decompress && !_disposed && _baseStream.CanRead;
 
-    /// <summary>
-    /// Gets a value indicating whether the current stream supports seeking. Always returns <see langword="false"/>.
-    /// </summary>
     public override bool CanSeek => false;
 
-    /// <summary>
-    /// Gets a value indicating whether the current stream supports writing.
-    /// </summary>
     public override bool CanWrite => CompressionMode is CompressionMode.Compress && !_disposed && _baseStream.CanWrite;
 
-    /// <summary>
-    /// Gets the length in bytes of the stream.
-    /// </summary>
     public override long Length => _baseStream.Length;
 
-    /// <summary>
-    /// Gets or sets the position within the current stream.
-    /// </summary>
-    /// <exception cref="NotSupportedException">Setting the position is not supported.</exception>
     public override long Position
     {
         get => _baseStream.Position;
         set => throw new NotSupportedException("Setting the position of a compression stream is not supported.");
     }
 
-    /// <summary>
-    /// Gets the compression mode of the stream.
-    /// </summary>
     public CompressionMode CompressionMode { get; }
 
-    /// <summary>
-    /// Gets or sets a value indicating whether to use quick compression.
-    /// </summary>
-    public bool QuickCompression { get; set; }
-
-    /// <summary>
-    /// Determines if the provided stream contains valid RefPack compressed data by checking its header.
-    /// </summary>
-    /// <param name="stream">The stream to check.</param>
-    /// <returns><see langword="true"/> if the stream contains valid RefPack compressed data; otherwise, <see langword="false"/>.</returns>
     public static bool IsValidRefPackStream(Stream stream)
     {
         ArgumentNullException.ThrowIfNull(stream);
@@ -125,11 +85,6 @@ public sealed class RefPackStream : Stream
         }
     }
 
-    /// <summary>
-    /// Calculates the uncompressed size of the data in a RefPack compressed stream without fully decompressing it.
-    /// </summary>
-    /// <param name="stream">The RefPack compressed stream.</param>
-    /// <returns>The uncompressed size of the data.</returns>
     public static int CalculateUncompressedSize(Stream stream)
     {
         ArgumentNullException.ThrowIfNull(stream);
@@ -173,38 +128,12 @@ public sealed class RefPackStream : Stream
         }
     }
 
-    /// <summary>
-    /// Not supported.
-    /// </summary>
-    /// <param name="value">The desired length of the current stream in bytes.</param>
-    /// <exception cref="NotSupportedException">Always thrown since setting the length is not supported.</exception>
     public override void SetLength(long value) =>
         throw new NotSupportedException("Setting the length of a compression stream is not supported.");
 
-    /// <summary>
-    /// Not supported.
-    /// </summary>
-    /// <param name="offset">A byte offset relative to the <paramref name="origin"/> parameter.</param>
-    /// <param name="origin">A value of type <see cref="SeekOrigin"/> indicating the reference point used to obtain the new position.</param>
-    /// <returns>The new position within the current stream.</returns>
     public override long Seek(long offset, SeekOrigin origin) =>
         throw new NotSupportedException("Seeking in a compression stream is not supported.");
 
-    /// <summary>
-    /// Reads a sequence of bytes from the current RefPack compressed stream and advances the position within the stream by the number of bytes read.
-    /// </summary>
-    /// <param name="buffer">An array of bytes. When this method returns, the buffer contains the specified byte array with the values between <paramref name="offset"/> and (<paramref name="offset"/> + <paramref name="count"/> - 1) replaced by the bytes read from the current source.</param>
-    /// <param name="offset">The zero-based byte offset in <paramref name="buffer"/> at which to begin storing the data read from the current stream.</param>
-    /// <param name="count">The maximum number of bytes to be read from the current stream.</param>
-    /// <returns>The total number of bytes read into the buffer. This can be less than the number of bytes requested if that many bytes are not currently available, or zero (0) if the end of the stream has been reached.</returns>
-    /// <exception cref="ObjectDisposedException">The stream has been disposed.</exception>
-    /// <exception cref="ArgumentNullException"><paramref name="buffer"/> is <see langword="null"/>.</exception>
-    /// <exception cref="ArgumentOutOfRangeException"><paramref name="offset"/> or <paramref name="count"/> is negative.-or-<paramref name="offset"/> + <paramref name="count"/> is greater than the length of <paramref name="buffer"/>.</exception>
-    /// <exception cref="NotSupportedException">The stream does not support reading.</exception>
-    /// <exception cref="InvalidDataException">The stream does not contain valid RefPack compressed data.</exception>
-    /// <remarks>
-    /// This method fully decompresses the RefPack data into memory before copying the requested number of bytes into the provided buffer.
-    /// </remarks>
     public override int Read(byte[] buffer, int offset, int count)
     {
         ObjectDisposedException.ThrowIf(_disposed, this);
@@ -358,16 +287,6 @@ public sealed class RefPackStream : Stream
         return bytesToCopy;
     }
 
-    /// <summary>
-    /// Writes the specified byte array to the current stream as compressed data.
-    /// </summary>
-    /// <param name="buffer">The byte array to write.</param>
-    /// <param name="offset">The zero-based byte offset in the array at which to begin copying bytes.</param>
-    /// <param name="count">The number of bytes to write.</param>
-    /// <exception cref="ObjectDisposedException">The stream has been disposed.</exception>
-    /// <exception cref="ArgumentNullException"><paramref name="buffer"/> is <see langword="null"/>.</exception>
-    /// <exception cref="ArgumentOutOfRangeException"><paramref name="offset"/> or <paramref name="count"/> is negative.-or-<paramref name="offset"/> + <paramref name="count"/> is greater than the length of <paramref name="buffer"/>.</exception>
-    /// <exception cref="NotSupportedException">The stream does not support writing.</exception>
     public override void Write(byte[] buffer, int offset, int count)
     {
         ObjectDisposedException.ThrowIf(_disposed, this);
@@ -409,11 +328,6 @@ public sealed class RefPackStream : Stream
         _baseStream.Write([.. output], 0, output.Count);
     }
 
-    /// <summary>
-    /// Flushes the underlying stream if the current stream is writable.
-    /// </summary>
-    /// <exception cref="ObjectDisposedException">The stream has been disposed.</exception>
-    /// <exception cref="NotSupportedException">The stream does not support writing.</exception>
     public override void Flush()
     {
         ObjectDisposedException.ThrowIf(_disposed, this);
@@ -426,10 +340,6 @@ public sealed class RefPackStream : Stream
         _baseStream.Flush();
     }
 
-    /// <summary>
-    /// Releases the unmanaged resources used by the <see cref="RefPackStream"/> and optionally releases the managed resources.
-    /// </summary>
-    /// <param name="disposing"><see langword="true"/> to release both managed and unmanaged resources; <see langword="false"/> to release only unmanaged resources.</param>
     protected override void Dispose(bool disposing)
     {
         if (_disposed)
@@ -483,7 +393,7 @@ public sealed class RefPackStream : Stream
         return unchecked(((first << 8) | third) ^ (second << 4));
     }
 
-    private byte[] RefCompress(byte[] buffer, int count)
+    private static byte[] RefCompress(byte[] buffer, int count)
     {
         const int maxBack = 0x01_FF_FF;
         List<byte> output = [];
@@ -610,24 +520,13 @@ public sealed class RefPackStream : Stream
                         }
                     }
 
-                    if (QuickCompression)
+                    for (var i = 0; i < bLength; i++)
                     {
-                        var hoff = cIndex;
                         var slot = HashAt(buffer, cIndex);
+                        var hoff = cIndex;
                         link[hoff & maxBack] = hashTable[slot];
                         hashTable[slot] = hoff;
-                        cIndex += bLength;
-                    }
-                    else
-                    {
-                        for (var i = 0; i < bLength; i++)
-                        {
-                            var slot = HashAt(buffer, cIndex);
-                            var hoff = cIndex;
-                            link[hoff & maxBack] = hashTable[slot];
-                            hashTable[slot] = hoff;
-                            cIndex++;
-                        }
+                        cIndex++;
                     }
 
                     rIndex = cIndex;
