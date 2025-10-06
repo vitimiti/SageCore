@@ -9,6 +9,7 @@
 using System.IO.Compression;
 using SageCore.Extensions;
 using SageCore.Io.Compression.Eac;
+using SageCore.Io.Compression.LzhLight;
 
 namespace SageCore.Io.Compression;
 
@@ -216,7 +217,7 @@ public sealed class SageCompressionStream : Stream
                 "The stream is not compressed and somehow reached the decompression stage."
             ),
             CompressionType.RefPack => new RefPackStream(_baseStream, CompressionMode.Decompress, leaveOpen: true),
-            CompressionType.NoxLzh => throw new NotImplementedException(),
+            CompressionType.NoxLzh => new LzhLightStream(_baseStream, CompressionMode.Decompress, leaveOpen: true),
             CompressionType.ZLib1
             or CompressionType.ZLib2
             or CompressionType.ZLib3
@@ -272,7 +273,7 @@ public sealed class SageCompressionStream : Stream
         using Stream compressionStream = CompressionType switch
         {
             CompressionType.RefPack => new RefPackStream(_baseStream, CompressionMode.Compress, leaveOpen: true),
-            CompressionType.NoxLzh => throw new NotImplementedException(),
+            CompressionType.NoxLzh => new LzhLightStream(_baseStream, CompressionMode.Compress, leaveOpen: true),
             CompressionType.ZLib1
             or CompressionType.ZLib2
             or CompressionType.ZLib3
