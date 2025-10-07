@@ -1,1 +1,5 @@
-<Solution />
+<Solution>
+  <Folder Name="/Io/">
+    <Project Path="SageCore.Io/SageCore.Io.csproj" />
+  </Folder>
+</Solution>
