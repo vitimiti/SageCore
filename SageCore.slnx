@@ -1,8 +1,1 @@
-<Solution>
-  <Folder Name="/Io/">
-    <Project Path="SageCore.Io/SageCore.Io.csproj" />
-  </Folder>
-  <Folder Name="/Io/FileFormats/">
-    <Project Path="SageCore.Io.FileFormats.Big/SageCore.Io.FileFormats.Big.csproj" />
-  </Folder>
-</Solution>
+<Solution />
