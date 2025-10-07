@@ -1,6 +1,1 @@
-<Solution>
-  <Folder Name="/Io/">
-    <Project Path="SageCore.Io.Compression/SageCore.Io.Compression.csproj" />
-  </Folder>
-  <Project Path="SageCore.Extensions/SageCore.Extensions.csproj" />
-</Solution>
+<Solution />
