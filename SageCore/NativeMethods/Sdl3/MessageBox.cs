@@ -20,5 +20,5 @@ internal static partial class Sdl
     [DefaultDllImportSearchPaths(DllImportSearchPath.UserDirectories)]
     [LibraryImport(DllName, EntryPoint = "SDL_ShowSimpleMessageBox", StringMarshalling = StringMarshalling.Utf8)]
     [return: MarshalAs(UnmanagedType.I4)]
-    public static partial bool ShowSimpleMessageBox(uint flags, string title, string message, nint window);
+    public static partial bool TryShowSimpleMessageBox(uint flags, string title, string message, nint window);
 }

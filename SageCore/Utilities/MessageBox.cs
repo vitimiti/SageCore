@@ -24,10 +24,15 @@ public sealed class MessageBox
     public static void ShowError(string message, string title)
     {
         if (
-            !Sdl.ShowSimpleMessageBox(Sdl.MessageBoxError | Sdl.MessageBoxButtonsLeftToRight, title, message, nint.Zero)
+            !Sdl.TryShowSimpleMessageBox(
+                Sdl.MessageBoxError | Sdl.MessageBoxButtonsLeftToRight,
+                title,
+                message,
+                nint.Zero
+            )
         )
         {
-            Console.WriteLine($"(SDL3 MessageBox failed: {Sdl.GetError()}) Error: {title}\n{message}");
+            Console.WriteLine($"(SDL3 MessageBox failed: {Sdl.GetError()})\nError: {title}\n{message}");
         }
     }
 }
