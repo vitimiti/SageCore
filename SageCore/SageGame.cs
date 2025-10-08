@@ -8,6 +8,7 @@
 
 using System.Diagnostics;
 using Microsoft.Extensions.Logging;
+using SageCore.Logging;
 
 namespace SageCore;
 
@@ -34,6 +35,7 @@ public sealed class SageGame(ILogger logger) : IDisposable
         while (IsRunning)
         {
             _gameTime.Update();
+            TraceLogging.LogGameTime(logger, _gameTime.TotalTime, _gameTime.DeltaTime, GameTime.TickRatio);
 
             // Game update and rendering logic would go here.
             IsRunning = false; // For demonstration, we stop after one loop.

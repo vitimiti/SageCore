@@ -14,7 +14,7 @@ namespace SageCore;
 /// Provides timing values for the game loop, including total elapsed time and delta time between frames.
 /// </summary>
 [DebuggerDisplay("{TotalTime} (+{DeltaTime}) @ {TickRatio} ticks/stopwatch tick")]
-internal class GameTime
+internal sealed class GameTime
 {
     private readonly Stopwatch _stopwatch = new();
 

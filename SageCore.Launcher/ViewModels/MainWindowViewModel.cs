@@ -18,8 +18,19 @@ internal sealed partial class MainWindowViewModel : ViewModelBase
 
     public MainWindowViewModel()
     {
-        using ILoggerFactory loggerFactory = LoggerFactory.Create(builder => builder.AddConsole());
-        _logger = loggerFactory.CreateLogger<MainWindowViewModel>();
+        // TODO: Allow configuration of logging level and output (e.g., file, console, etc.)
+        // For now, we will log to the console with a default log level.
+#if DEBUG
+        const LogLevel logLevel = LogLevel.Debug;
+#else
+        const LogLevel logLevel = LogLevel.Information;
+#endif
+
+        using ILoggerFactory loggerFactory = LoggerFactory.Create(builder =>
+            builder.AddConsole().SetMinimumLevel(logLevel)
+        );
+
+        _logger = loggerFactory.CreateLogger<SageGame>();
 
         // Just run a default game instance for now.
         // TODO: Add options to control the type of game and where the game files are located.
