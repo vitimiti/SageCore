@@ -7,17 +7,14 @@
 // -----------------------------------------------------------------------
 
 using System.Diagnostics;
-using Microsoft.Extensions.Logging;
-using SageCore.Logging;
 
 namespace SageCore;
 
 /// <summary>
 /// A basic game class to represent a Sage game instance.
 /// </summary>
-/// <param name="logger">The logger instance for logging game events.</param>
 [DebuggerDisplay("IsRunning = {IsRunning}")]
-public sealed class SageGame(ILogger logger) : IDisposable
+public sealed class SageGame() : IDisposable
 {
     private readonly GameTime _gameTime = new();
 
@@ -35,7 +32,6 @@ public sealed class SageGame(ILogger logger) : IDisposable
         while (IsRunning)
         {
             _gameTime.Update();
-            TraceLogging.LogGameTime(logger, _gameTime.TotalTime, _gameTime.DeltaTime, GameTime.TickRatio);
 
             // Game update and rendering logic would go here.
             IsRunning = false; // For demonstration, we stop after one loop.

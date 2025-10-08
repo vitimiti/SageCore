@@ -9,7 +9,7 @@
 using System;
 using Avalonia;
 
-namespace SageCore.Launcher;
+namespace SageCore.Launcher.Sdl3;
 
 internal sealed class Program
 {
