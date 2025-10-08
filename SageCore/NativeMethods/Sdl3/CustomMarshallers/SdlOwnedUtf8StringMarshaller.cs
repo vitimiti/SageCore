@@ -32,6 +32,12 @@ internal static unsafe class SdlOwnedUtf8StringMarshaller
 
         public readonly string? ToManaged() => _managed;
 
-        public readonly void Free() => Sdl.Free(_unmanaged);
+        public readonly void Free()
+        {
+            if (_unmanaged is not null)
+            {
+                Sdl.Free(_unmanaged);
+            }
+        }
     }
 }
