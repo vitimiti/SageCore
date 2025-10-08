@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------
-// <copyright file="StdInc.cs" company="SageCore Contributors">
+// <copyright file="Error.cs" company="SageCore Contributors">
 // 2025 Copyright (c) SageCore Contributors. All rights reserved.
 // Licensed under the MIT license.
 // See LICENSE.md for more information.
@@ -7,16 +7,18 @@
 // -----------------------------------------------------------------------
 
 using System.Runtime.InteropServices;
+using SageCore.NativeMethods.Sdl3.CustomMarshallers;
 
-namespace SageCore.Platform.Sdl3.NativeMethods;
+namespace SageCore.NativeMethods.Sdl3;
 
 internal static unsafe partial class Sdl
 {
     [DefaultDllImportSearchPaths(DllImportSearchPath.UserDirectories)]
-    [LibraryImport(DllName, EntryPoint = "SDL_strdup")]
-    public static partial byte* StrDup(byte* str);
-
-    [DefaultDllImportSearchPaths(DllImportSearchPath.UserDirectories)]
-    [LibraryImport(DllName, EntryPoint = "SDL_free")]
-    public static partial void Free(void* ptr);
+    [LibraryImport(
+        DllName,
+        EntryPoint = "SDL_GetError",
+        StringMarshalling = StringMarshalling.Custom,
+        StringMarshallingCustomType = typeof(SdlOwnedUtf8StringMarshaller)
+    )]
+    public static partial string? GetError();
 }

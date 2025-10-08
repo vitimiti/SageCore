@@ -8,7 +8,7 @@
 
 using System.Runtime.InteropServices.Marshalling;
 
-namespace SageCore.Platform.Sdl3.NativeMethods.CustomMarshallers;
+namespace SageCore.NativeMethods.Sdl3.CustomMarshallers;
 
 [CustomMarshaller(typeof(string), MarshalMode.ManagedToUnmanagedOut, typeof(ManagedToUnmanagedOut))]
 internal static unsafe class SdlOwnedUtf8StringMarshaller

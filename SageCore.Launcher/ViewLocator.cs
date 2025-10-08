@@ -10,9 +10,9 @@ using System;
 using System.Diagnostics.CodeAnalysis;
 using Avalonia.Controls;
 using Avalonia.Controls.Templates;
-using SageCore.Launcher.Sdl3.ViewModels;
+using SageCore.Launcher.ViewModels;
 
-namespace SageCore.Launcher.Sdl3;
+namespace SageCore.Launcher;
 
 [SuppressMessage("Performance", "CA1812: Avoid uninstantiated internal classes", Justification = "Used by Avalonia")]
 internal sealed class ViewLocator : IDataTemplate

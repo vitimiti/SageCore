@@ -25,8 +25,6 @@
     <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="9.0.9" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\SageCore.Abstractions\SageCore.Abstractions.csproj" />
     <ProjectReference Include="..\SageCore\SageCore.csproj" />
-    <ProjectReference Include="..\SageCore.Platform.Sdl3\SageCore.Platform.Sdl3.csproj" />
   </ItemGroup>
 </Project>

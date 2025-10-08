@@ -9,7 +9,7 @@
 using System.Diagnostics.CodeAnalysis;
 using Avalonia.Controls;
 
-namespace SageCore.Launcher.Sdl3.Views;
+namespace SageCore.Launcher.Views;
 
 [SuppressMessage("Performance", "CA1812: Avoid uninstantiated internal classes", Justification = "Used by Avalonia")]
 internal sealed partial class MainWindow : Window

@@ -6,18 +6,22 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-using SageCore.Abstractions;
-using SageCore.Platform.Sdl3.NativeMethods;
+using SageCore.NativeMethods.Sdl3;
 
-namespace SageCore.Platform.Sdl3;
+namespace SageCore;
 
 /// <summary>
-/// An implementation of the <see cref="IMessageBox"/> interface using SDL3.
+/// A simple message box implementation using SDL3.
 /// </summary>
-public sealed class MessageBox : IMessageBox
+public sealed class MessageBox
 {
-    /// <inheritdoc/>
-    public void ShowError(string message, string title)
+    /// <summary>
+    /// Shows an error message box with the specified message and title.
+    /// </summary>
+    /// <param name="message">The message to display.</param>
+    /// <param name="title">The title of the message box.</param>
+    /// <remarks>This method is not thread-safe.</remarks>
+    public static void ShowError(string message, string title)
     {
         if (
             !Sdl.ShowSimpleMessageBox(Sdl.MessageBoxError | Sdl.MessageBoxButtonsLeftToRight, title, message, nint.Zero)

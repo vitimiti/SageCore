@@ -8,6 +8,6 @@
 
 using CommunityToolkit.Mvvm.ComponentModel;
 
-namespace SageCore.Launcher.Sdl3.ViewModels;
+namespace SageCore.Launcher.ViewModels;
 
 internal class ViewModelBase : ObservableObject { }

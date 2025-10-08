@@ -8,7 +8,7 @@
 
 using System.Runtime.InteropServices;
 
-namespace SageCore.Platform.Sdl3.NativeMethods;
+namespace SageCore.NativeMethods.Sdl3;
 
 internal static partial class Sdl
 {

@@ -9,20 +9,20 @@
 using System;
 using System.Diagnostics.CodeAnalysis;
 using Avalonia.Controls;
-using SageCore.Abstractions;
 
-namespace SageCore.Launcher.Sdl3.ViewModels;
+namespace SageCore.Launcher.ViewModels;
 
 [SuppressMessage("Performance", "CA1812: Avoid uninstantiated internal classes", Justification = "Used by Avalonia")]
-internal sealed partial class MainWindowViewModel([NotNull] IMessageBox messageBox) : ViewModelBase
+internal sealed partial class MainWindowViewModel : ViewModelBase
 {
-    private Window? _mainWindow;
+    private readonly Window _mainWindow;
 
     public string Greeting { get; } = "Welcome to Avalonia!";
 
-    public void SetWindow([NotNull] Window window)
+    public MainWindowViewModel([NotNull] Window mainWindow)
     {
-        _mainWindow = window;
+        _mainWindow = mainWindow;
+
         StartSageGame();
     }
 
@@ -33,12 +33,6 @@ internal sealed partial class MainWindowViewModel([NotNull] IMessageBox messageB
     )]
     private void StartSageGame()
     {
-        if (_mainWindow is null)
-        {
-            messageBox.ShowError("Initialization Error", "Main window is not set.");
-            return;
-        }
-
         _mainWindow.WindowState = WindowState.Minimized;
 
         try
@@ -48,7 +42,7 @@ internal sealed partial class MainWindowViewModel([NotNull] IMessageBox messageB
         }
         catch (Exception ex)
         {
-            messageBox.ShowError("An error occurred while running the game.", $"{ex}");
+            MessageBox.ShowError("An error occurred while running the game.", $"{ex}");
         }
         finally
         {
