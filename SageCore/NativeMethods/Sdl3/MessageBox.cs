@@ -15,8 +15,6 @@ internal static partial class Sdl
     public const uint MessageBoxError = 0x10;
     public const uint MessageBoxButtonsLeftToRight = 0x80;
 
-    private const string DllName = "SDL3";
-
     [DefaultDllImportSearchPaths(DllImportSearchPath.UserDirectories)]
     [LibraryImport(DllName, EntryPoint = "SDL_ShowSimpleMessageBox", StringMarshalling = StringMarshalling.Utf8)]
     [return: MarshalAs(UnmanagedType.I4)]
