@@ -8,7 +8,7 @@
 
 using SageCore.NativeMethods.Sdl3;
 
-namespace SageCore;
+namespace SageCore.Utilities;
 
 /// <summary>
 /// A simple message box implementation using SDL3.

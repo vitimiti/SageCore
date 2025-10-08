@@ -9,6 +9,7 @@
 using System;
 using System.Diagnostics.CodeAnalysis;
 using Avalonia.Controls;
+using SageCore.Utilities;
 
 namespace SageCore.Launcher.ViewModels;
 
