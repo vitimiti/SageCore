@@ -13,7 +13,6 @@ using SageCore.Utilities;
 
 namespace SageCore.Launcher.ViewModels;
 
-[SuppressMessage("Performance", "CA1812: Avoid uninstantiated internal classes", Justification = "Used by Avalonia")]
 internal sealed partial class MainWindowViewModel : ViewModelBase
 {
     private readonly Window _mainWindow;
