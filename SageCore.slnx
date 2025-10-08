@@ -1,1 +1,8 @@
-<Solution />
+<Solution>
+  <Folder Name="/Platform/">
+    <Project Path="SageCore.Platform.Sdl3/SageCore.Platform.Sdl3.csproj" />
+  </Folder>
+  <Project Path="SageCore.Abstractions/SageCore.Abstractions.csproj" />
+  <Project Path="SageCore.Launcher/SageCore.Launcher.csproj" />
+  <Project Path="SageCore/SageCore.csproj" />
+</Solution>
