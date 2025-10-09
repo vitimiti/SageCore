@@ -36,10 +36,6 @@ internal static partial class SageGameLogging
     [LoggerMessage(Level = LogLevel.Error, Message = "Attempted to run game that has already been disposed")]
     public static partial void LogRunOnDisposedGame(ILogger logger);
 
-    // System Information Logging
-    [LoggerMessage(Level = LogLevel.Information, Message = "=== SYSTEM INFORMATION ===")]
-    public static partial void LogSystemInfoHeader(ILogger logger);
-
     [LoggerMessage(Level = LogLevel.Information, Message = "Operating System: {OSDescription}")]
     public static partial void LogOperatingSystem(ILogger logger, string osDescription);
 
@@ -165,7 +161,4 @@ internal static partial class SageGameLogging
 
     [LoggerMessage(Level = LogLevel.Information, Message = "CLR Version: {CLRVersion}")]
     public static partial void LogCLRVersion(ILogger logger, string clrVersion);
-
-    [LoggerMessage(Level = LogLevel.Information, Message = "=== END SYSTEM INFORMATION ===")]
-    public static partial void LogSystemInfoFooter(ILogger logger);
 }

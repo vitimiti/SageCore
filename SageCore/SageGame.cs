@@ -44,7 +44,7 @@ public sealed class SageGame : IDisposable
         _logger = logger;
         _options = options?.Value ?? new SageGameOptions();
 
-        LogUserSystemInformation();
+        LogSystemInformation();
 
         CommonLogging.LogInitializing(_logger, nameof(SageGame));
 
@@ -134,17 +134,22 @@ public sealed class SageGame : IDisposable
         SageGameLogging.LogIs64BitOS(_logger, Environment.Is64BitOperatingSystem);
     }
 
-    private void LogSystemInformation()
+    private void LogUserInformation()
     {
         SageGameLogging.LogMachineName(_logger, Environment.MachineName);
         SageGameLogging.LogUserName(_logger, Environment.UserName);
         SageGameLogging.LogUserDomain(_logger, Environment.UserDomainName);
-        SageGameLogging.LogWorkingDirectory(_logger, Environment.CurrentDirectory);
     }
 
-    private void LogDirectoryInformation()
+    private void LogCoreSystemDirectories()
     {
         SageGameLogging.LogSystemDirectory(_logger, Environment.SystemDirectory);
+        SageGameLogging.LogWorkingDirectory(_logger, Environment.CurrentDirectory);
+        SageGameLogging.LogTemporaryDirectory(_logger, Path.GetTempPath());
+    }
+
+    private void LogApplicationDataDirectories()
+    {
         SageGameLogging.LogApplicationDataDirectory(
             _logger,
             Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)
@@ -159,14 +164,10 @@ public sealed class SageGame : IDisposable
             _logger,
             Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData)
         );
+    }
 
-        SageGameLogging.LogDesktopDirectory(_logger, Environment.GetFolderPath(Environment.SpecialFolder.Desktop));
-        SageGameLogging.LogDocumentsDirectory(_logger, Environment.GetFolderPath(Environment.SpecialFolder.Personal));
-        SageGameLogging.LogUserProfileDirectory(
-            _logger,
-            Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)
-        );
-
+    private void LogProgramDirectories()
+    {
         SageGameLogging.LogProgramFilesDirectory(
             _logger,
             Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles)
@@ -186,8 +187,17 @@ public sealed class SageGame : IDisposable
             _logger,
             Environment.GetFolderPath(Environment.SpecialFolder.CommonProgramFilesX86)
         );
+    }
 
-        SageGameLogging.LogTemporaryDirectory(_logger, Path.GetTempPath());
+    private void LogUserDirectories()
+    {
+        SageGameLogging.LogUserProfileDirectory(
+            _logger,
+            Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)
+        );
+
+        SageGameLogging.LogDesktopDirectory(_logger, Environment.GetFolderPath(Environment.SpecialFolder.Desktop));
+        SageGameLogging.LogDocumentsDirectory(_logger, Environment.GetFolderPath(Environment.SpecialFolder.Personal));
         SageGameLogging.LogMyDocumentsDirectory(
             _logger,
             Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)
@@ -200,12 +210,25 @@ public sealed class SageGame : IDisposable
         );
 
         SageGameLogging.LogMyVideosDirectory(_logger, Environment.GetFolderPath(Environment.SpecialFolder.MyVideos));
+    }
+
+    private void LogSystemMenuDirectories()
+    {
         SageGameLogging.LogStartupDirectory(_logger, Environment.GetFolderPath(Environment.SpecialFolder.Startup));
         SageGameLogging.LogStartMenuDirectory(_logger, Environment.GetFolderPath(Environment.SpecialFolder.StartMenu));
         SageGameLogging.LogCommonStartMenuDirectory(
             _logger,
             Environment.GetFolderPath(Environment.SpecialFolder.CommonStartMenu)
         );
+    }
+
+    private void LogDirectoryInformation()
+    {
+        LogCoreSystemDirectories();
+        LogApplicationDataDirectories();
+        LogProgramDirectories();
+        LogUserDirectories();
+        LogSystemMenuDirectories();
     }
 
     private void LogProcessInformation()
@@ -222,18 +245,14 @@ public sealed class SageGame : IDisposable
         SageGameLogging.LogTotalPhysicalMemory(_logger, Sdl.GetSystemRam());
     }
 
-    private void LogUserSystemInformation()
+    private void LogSystemInformation()
     {
-        SageGameLogging.LogSystemInfoHeader(_logger);
-
         LogOperatingSystemInformation();
         LogRuntimeInformation();
         LogHardwareInformation();
-        LogSystemInformation();
-        LogDirectoryInformation();
-        LogProcessInformation();
         LogMemoryInformation();
-
-        SageGameLogging.LogSystemInfoFooter(_logger);
+        LogProcessInformation();
+        LogUserInformation();
+        LogDirectoryInformation();
     }
 }
