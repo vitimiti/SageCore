@@ -76,7 +76,7 @@ internal sealed class PlatformSystem : IDisposable
     private void InitializeSdlLogging()
     {
         // TODO: Change the level depending on the chosen log level. Make Info the minimum.
-        Sdl.SetLogPriorities(Sdl.LogPriority.Info);
+        Sdl.SetLogPriorities(Sdl.LogPriority.Trace);
 
         Sdl.SetLogOutputFunction(
             (category, priority, message) =>

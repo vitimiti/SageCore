@@ -38,7 +38,11 @@ internal sealed partial class MainWindowViewModel : ViewModelBase
 
         try
         {
-            using ILoggerFactory loggerFactory = LoggerFactory.Create(builder => builder.AddConsole());
+            // TODO: Add configuration for logging
+            using ILoggerFactory loggerFactory = LoggerFactory.Create(builder =>
+                builder.AddConsole().SetMinimumLevel(LogLevel.Trace)
+            );
+
             ILogger<SageGame> logger = loggerFactory.CreateLogger<SageGame>();
             using SageGame sageGame = new(logger);
             sageGame.Run();
