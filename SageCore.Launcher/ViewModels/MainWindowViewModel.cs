@@ -36,25 +36,46 @@ internal sealed partial class MainWindowViewModel : ViewModelBase
     {
         _mainWindow.WindowState = WindowState.Minimized;
 
+        // TODO: Add configuration for logging
+        using ILoggerFactory loggerFactory = LoggerFactory.Create(builder =>
+            builder.AddConsole().SetMinimumLevel(LogLevel.Trace)
+        );
+
+        ILogger<SageGame> logger = loggerFactory.CreateLogger<SageGame>();
+
         try
         {
-            // TODO: Add configuration for logging
-            using ILoggerFactory loggerFactory = LoggerFactory.Create(builder =>
-                builder.AddConsole().SetMinimumLevel(LogLevel.Trace)
-            );
-
-            ILogger<SageGame> logger = loggerFactory.CreateLogger<SageGame>();
             using SageGame sageGame = new(logger);
+            GameLogging.LogGameInstanceCreated(logger);
             sageGame.Run();
+            GameLogging.LogGameRunEnded(logger);
         }
         catch (Exception ex)
         {
             MessageBox.ShowError("An error occurred while running the game.", $"{ex}");
+            GameLogging.LogGameRunError(logger, ex.ToString());
         }
         finally
         {
             _mainWindow.WindowState = WindowState.Normal;
             _mainWindow.Activate();
         }
+
+        GameLogging.LogGameInstanceDisposed(logger);
+    }
+
+    private static partial class GameLogging
+    {
+        [LoggerMessage(Level = LogLevel.Debug, Message = "Game instance created.")]
+        public static partial void LogGameInstanceCreated(ILogger logger);
+
+        [LoggerMessage(Level = LogLevel.Debug, Message = "Game instance disposed.")]
+        public static partial void LogGameInstanceDisposed(ILogger logger);
+
+        [LoggerMessage(Level = LogLevel.Debug, Message = "Game run ended.")]
+        public static partial void LogGameRunEnded(ILogger logger);
+
+        [LoggerMessage(Level = LogLevel.Error, Message = "An error occurred while running the game: {ErrorMessage}")]
+        public static partial void LogGameRunError(ILogger logger, string errorMessage);
     }
 }

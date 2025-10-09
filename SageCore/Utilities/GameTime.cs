@@ -7,6 +7,8 @@
 // -----------------------------------------------------------------------
 
 using System.Diagnostics;
+using Microsoft.Extensions.Logging;
+using SageCore.Logging;
 
 namespace SageCore.Utilities;
 
@@ -16,11 +18,30 @@ namespace SageCore.Utilities;
 [DebuggerDisplay("{TotalTime} (+{DeltaTime}) @ {TickRatio} ticks/stopwatch tick")]
 internal sealed class GameTime
 {
+    private readonly ILogger _logger;
     private readonly Stopwatch _stopwatch = new();
 
     private long _startTime;
     private long _lastTime;
     private long _currentTime;
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="GameTime"/> class and starts the stopwatch.
+    /// </summary>
+    /// <param name="logger">The logger to use for logging game time events.</param>
+    public GameTime(ILogger logger)
+    {
+        _logger = logger;
+
+        GameTimeLogging.LogStopwatchStarted(_logger);
+        _stopwatch.Start();
+
+        _startTime = _stopwatch.ElapsedTicks;
+        _lastTime = _startTime;
+        _currentTime = _startTime;
+
+        GameTimeLogging.LogGameTimeInitialized(_logger, TickRatio);
+    }
 
     /// <summary>
     /// Gets the ratio of TimeSpan ticks to Stopwatch ticks.
@@ -53,17 +74,6 @@ internal sealed class GameTime
     private static TimeSpan MaxDeltaTime => TimeSpan.FromMilliseconds(100);
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="GameTime"/> class and starts the stopwatch.
-    /// </summary>
-    public GameTime()
-    {
-        _stopwatch.Start();
-        _startTime = _stopwatch.ElapsedTicks;
-        _lastTime = _startTime;
-        _currentTime = _startTime;
-    }
-
-    /// <summary>
     /// Updates the timing values. Should be called once per frame.
     /// </summary>
     public void Update()
@@ -75,10 +85,28 @@ internal sealed class GameTime
         TotalTime = new TimeSpan((long)((_currentTime - _startTime) * TickRatio));
 
         TimeSpan delta = new((long)((_currentTime - _lastTime) * TickRatio));
-        DeltaTime = delta > MaxDeltaTime ? MaxDeltaTime : delta;
+        var wasClamped = false;
+        TimeSpan originalDelta = delta;
+
+        if (delta > MaxDeltaTime)
+        {
+            wasClamped = true;
+            delta = MaxDeltaTime;
+        }
+
+        DeltaTime = delta;
 
         TotalTimeSeconds = (float)TotalTime.TotalSeconds;
         DeltaTimeSeconds = (float)DeltaTime.TotalSeconds;
+
+        // Log the update (trace level for frequent calls)
+        GameTimeLogging.LogGameTimeUpdated(_logger, TotalTime.TotalMilliseconds, DeltaTime.TotalMilliseconds);
+
+        // Log if delta time was clamped (warning level as this indicates potential issues)
+        if (wasClamped)
+        {
+            GameTimeLogging.LogDeltaTimeClamped(_logger, originalDelta.TotalMilliseconds, DeltaTime.TotalMilliseconds);
+        }
     }
 
     /// <summary>
@@ -89,5 +117,7 @@ internal sealed class GameTime
         _startTime = _stopwatch.ElapsedTicks;
         _lastTime = _startTime;
         _currentTime = _startTime;
+
+        GameTimeLogging.LogGameTimeReset(_logger, _startTime);
     }
 }
