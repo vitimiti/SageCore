@@ -24,6 +24,21 @@ internal static partial class SageGameLogging
     )]
     public static partial void LogGameLoopIteration(ILogger logger, double totalTimeMs, double deltaTimeMs);
 
+    [LoggerMessage(Level = LogLevel.Trace, Message = "Polled event: {EventType}")]
+    public static partial void LogEventPolled(ILogger logger, string eventType);
+
+    [LoggerMessage(Level = LogLevel.Information, Message = "Quit event received - stopping game loop")]
+    public static partial void LogQuitEventReceived(ILogger logger);
+
+    [LoggerMessage(Level = LogLevel.Trace, Message = "Update started")]
+    public static partial void LogUpdateStarted(ILogger logger);
+
+    [LoggerMessage(
+        Level = LogLevel.Trace,
+        Message = "Update finished - Total time: {TotalTimeMs}ms, Delta: {DeltaTimeMs}ms"
+    )]
+    public static partial void LogUpdateFinished(ILogger logger, double totalTimeMs, double deltaTimeMs);
+
     [LoggerMessage(Level = LogLevel.Debug, Message = "Platform system disposed")]
     public static partial void LogPlatformSystemDisposed(ILogger logger);
 

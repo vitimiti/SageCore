@@ -10,7 +10,6 @@ using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using SageCore.Logging;
 using SageCore.NativeMethods.Sdl3;
 using SageCore.Systems;
@@ -39,10 +38,10 @@ public sealed class SageGame : IDisposable
     /// </summary>
     /// <param name="logger">The logger instance for logging game events.</param>
     /// <param name="options">The game options for configuring the game instance. If null, default options will be used.</param>
-    public SageGame([NotNull] ILogger logger, IOptions<SageGameOptions>? options = null)
+    public SageGame([NotNull] ILogger logger, SageGameOptions? options = null)
     {
         _logger = logger;
-        _options = options?.Value ?? new SageGameOptions();
+        _options = options ?? new SageGameOptions();
 
         LogSystemInformation();
 
@@ -72,7 +71,7 @@ public sealed class SageGame : IDisposable
 
         while (_isRunning)
         {
-            _gameTime.Update();
+            Update();
 
             // Log each iteration at debug level (can be useful for debugging but not too verbose)
             SageGameLogging.LogGameLoopIteration(
@@ -80,9 +79,6 @@ public sealed class SageGame : IDisposable
                 _gameTime.TotalTime.TotalMilliseconds,
                 _gameTime.DeltaTime.TotalMilliseconds
             );
-
-            // Game update and rendering logic would go here.
-            _isRunning = false; // For demonstration, we stop after one loop.
         }
 
         SageGameLogging.LogGameLoopEnded(_logger);
@@ -110,6 +106,35 @@ public sealed class SageGame : IDisposable
         SageGameLogging.LogSdlQuit(_logger);
 
         CommonLogging.LogDisposed(_logger, nameof(SageGame));
+    }
+
+    private void ParseEvents()
+    {
+        while (Sdl.PollEvent(out Sdl.Event e))
+        {
+            SageGameLogging.LogEventPolled(_logger, e.Type.ToString());
+
+            if (e.Type == Sdl.EventType.Quit)
+            {
+                SageGameLogging.LogQuitEventReceived(_logger);
+                _isRunning = false;
+            }
+        }
+    }
+
+    private void Update()
+    {
+        SageGameLogging.LogUpdateStarted(_logger);
+
+        ParseEvents();
+        _gameTime.Update();
+
+        // Log after update so callers can see post-update timings
+        SageGameLogging.LogUpdateFinished(
+            _logger,
+            _gameTime.TotalTime.TotalMilliseconds,
+            _gameTime.DeltaTime.TotalMilliseconds
+        );
     }
 
     private void LogOperatingSystemInformation()

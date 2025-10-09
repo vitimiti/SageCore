@@ -25,6 +25,22 @@ public class ScreenOptions
     public string Title { get; set; } = "SageCore Application";
 
     /// <summary>
+    /// Gets or sets the width of the application window in pixels.
+    /// </summary>
+    /// <remarks>
+    /// Default is 800.
+    /// </remarks>
+    public int Width { get; set; } = 800;
+
+    /// <summary>
+    /// Gets or sets the height of the application window in pixels.
+    /// </summary>
+    /// <remarks>
+    /// Default is 600.
+    /// </remarks>
+    public int Height { get; set; } = 600;
+
+    /// <summary>
     /// Gets or sets a value indicating whether the application should run in full screen mode.
     /// </summary>
     /// <remarks>
