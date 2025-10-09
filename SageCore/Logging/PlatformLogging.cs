@@ -14,10 +14,10 @@ namespace SageCore.Logging;
 internal static partial class PlatformLogging
 {
     [LoggerMessage(Level = LogLevel.Warning, Message = "Failed to set the app data '{Data}' to '{Value}'")]
-    public static partial void LogFailedToSetAppData(ILogger logger, string Data, string Value);
+    public static partial void LogFailedToSetAppData(ILogger logger, string data, string value);
 
     [LoggerMessage(Level = LogLevel.Debug, Message = "Successfully set app data '{Data}' to '{Value}'")]
-    public static partial void LogSuccessfullySetAppData(ILogger logger, string Data, string Value);
+    public static partial void LogSuccessfullySetAppData(ILogger logger, string data, string value);
 
     [LoggerMessage(Level = LogLevel.Debug, Message = "Initializing app options")]
     public static partial void LogInitializingAppOptions(ILogger logger);
