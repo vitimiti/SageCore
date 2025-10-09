@@ -18,10 +18,10 @@ public sealed class MessageBox
     /// <summary>
     /// Shows an error message box with the specified message and title.
     /// </summary>
-    /// <param name="message">The message to display.</param>
     /// <param name="title">The title of the message box.</param>
+    /// <param name="message">The message to display.</param>
     /// <remarks>This method is not thread-safe.</remarks>
-    public static void ShowError(string message, string title)
+    public static void ShowError(string title, string message)
     {
         if (
             !Sdl.TryShowSimpleMessageBox(

@@ -9,6 +9,7 @@
 using System;
 using System.Diagnostics.CodeAnalysis;
 using Avalonia.Controls;
+using Microsoft.Extensions.Logging;
 using SageCore.Utilities;
 
 namespace SageCore.Launcher.ViewModels;
@@ -37,7 +38,9 @@ internal sealed partial class MainWindowViewModel : ViewModelBase
 
         try
         {
-            using SageGame sageGame = new();
+            using ILoggerFactory loggerFactory = LoggerFactory.Create(builder => builder.AddConsole());
+            ILogger<SageGame> logger = loggerFactory.CreateLogger<SageGame>();
+            using SageGame sageGame = new(logger);
             sageGame.Run();
         }
         catch (Exception ex)
