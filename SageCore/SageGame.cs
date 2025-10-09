@@ -44,7 +44,7 @@ public sealed class SageGame : IDisposable
         _logger = logger;
         _options = options?.Value ?? new SageGameOptions();
 
-        LogSystemInformation();
+        LogUserSystemInformation();
 
         CommonLogging.LogInitializing(_logger, nameof(SageGame));
 
@@ -112,59 +112,127 @@ public sealed class SageGame : IDisposable
         CommonLogging.LogDisposed(_logger, nameof(SageGame));
     }
 
-    private void LogSystemInformation()
+    private void LogOperatingSystemInformation()
     {
-        SageGameLogging.LogSystemInfoHeader(_logger);
-
-        // Operating System Information
         SageGameLogging.LogOperatingSystem(_logger, Environment.OSVersion.VersionString);
         SageGameLogging.LogOSVersion(_logger, Environment.OSVersion.ToString());
         SageGameLogging.LogArchitecture(_logger, RuntimeInformation.OSArchitecture.ToString());
         SageGameLogging.LogProcessArchitecture(_logger, RuntimeInformation.ProcessArchitecture.ToString());
+    }
 
-        // Runtime Information
+    private void LogRuntimeInformation()
+    {
         SageGameLogging.LogFramework(_logger, RuntimeInformation.FrameworkDescription);
         SageGameLogging.LogRuntimeVersion(_logger, Environment.Version.ToString());
         SageGameLogging.LogCLRVersion(_logger, RuntimeInformation.RuntimeIdentifier);
+    }
 
-        // Hardware Information
+    private void LogHardwareInformation()
+    {
         SageGameLogging.LogProcessorCount(_logger, Environment.ProcessorCount);
         SageGameLogging.LogIs64BitProcess(_logger, Environment.Is64BitProcess);
         SageGameLogging.LogIs64BitOS(_logger, Environment.Is64BitOperatingSystem);
+    }
 
-        // System Information
+    private void LogSystemInformation()
+    {
         SageGameLogging.LogMachineName(_logger, Environment.MachineName);
         SageGameLogging.LogUserName(_logger, Environment.UserName);
         SageGameLogging.LogUserDomain(_logger, Environment.UserDomainName);
         SageGameLogging.LogWorkingDirectory(_logger, Environment.CurrentDirectory);
-        SageGameLogging.LogSystemDirectory(_logger, Environment.SystemDirectory);
+    }
 
-        // Process Information
+    private void LogDirectoryInformation()
+    {
+        SageGameLogging.LogSystemDirectory(_logger, Environment.SystemDirectory);
+        SageGameLogging.LogApplicationDataDirectory(
+            _logger,
+            Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)
+        );
+
+        SageGameLogging.LogLocalApplicationDataDirectory(
+            _logger,
+            Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)
+        );
+
+        SageGameLogging.LogCommonApplicationDataDirectory(
+            _logger,
+            Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData)
+        );
+
+        SageGameLogging.LogDesktopDirectory(_logger, Environment.GetFolderPath(Environment.SpecialFolder.Desktop));
+        SageGameLogging.LogDocumentsDirectory(_logger, Environment.GetFolderPath(Environment.SpecialFolder.Personal));
+        SageGameLogging.LogUserProfileDirectory(
+            _logger,
+            Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)
+        );
+
+        SageGameLogging.LogProgramFilesDirectory(
+            _logger,
+            Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles)
+        );
+
+        SageGameLogging.LogProgramFilesX86Directory(
+            _logger,
+            Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86)
+        );
+
+        SageGameLogging.LogCommonProgramFilesDirectory(
+            _logger,
+            Environment.GetFolderPath(Environment.SpecialFolder.CommonProgramFiles)
+        );
+
+        SageGameLogging.LogCommonProgramFilesX86Directory(
+            _logger,
+            Environment.GetFolderPath(Environment.SpecialFolder.CommonProgramFilesX86)
+        );
+
+        SageGameLogging.LogTemporaryDirectory(_logger, Path.GetTempPath());
+        SageGameLogging.LogMyDocumentsDirectory(
+            _logger,
+            Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)
+        );
+
+        SageGameLogging.LogMyMusicDirectory(_logger, Environment.GetFolderPath(Environment.SpecialFolder.MyMusic));
+        SageGameLogging.LogMyPicturesDirectory(
+            _logger,
+            Environment.GetFolderPath(Environment.SpecialFolder.MyPictures)
+        );
+
+        SageGameLogging.LogMyVideosDirectory(_logger, Environment.GetFolderPath(Environment.SpecialFolder.MyVideos));
+        SageGameLogging.LogStartupDirectory(_logger, Environment.GetFolderPath(Environment.SpecialFolder.Startup));
+        SageGameLogging.LogStartMenuDirectory(_logger, Environment.GetFolderPath(Environment.SpecialFolder.StartMenu));
+        SageGameLogging.LogCommonStartMenuDirectory(
+            _logger,
+            Environment.GetFolderPath(Environment.SpecialFolder.CommonStartMenu)
+        );
+    }
+
+    private void LogProcessInformation()
+    {
         using var currentProcess = Process.GetCurrentProcess();
         SageGameLogging.LogCurrentProcess(_logger, currentProcess.ProcessName, currentProcess.Id);
         SageGameLogging.LogProcessStartTime(_logger, currentProcess.StartTime);
+    }
 
-        // Memory Information
+    private void LogMemoryInformation()
+    {
         var gcMemory = GC.GetTotalMemory(false);
         SageGameLogging.LogGCMemory(_logger, gcMemory / (1024 * 1024));
+        SageGameLogging.LogTotalPhysicalMemory(_logger, Sdl.GetSystemRam());
+    }
 
-        // Get system memory information (cross-platform approach)
-        try
-        {
-            GCMemoryInfo memoryInfo = GC.GetGCMemoryInfo();
-            if (memoryInfo.TotalAvailableMemoryBytes > 0)
-            {
-                SageGameLogging.LogTotalPhysicalMemory(_logger, memoryInfo.TotalAvailableMemoryBytes / (1024 * 1024));
-            }
-        }
-        catch (PlatformNotSupportedException)
-        {
-            // GC memory info may not be available on all platforms
-        }
-        catch (NotSupportedException)
-        {
-            // GC memory info may not be supported in this runtime version
-        }
+    private void LogUserSystemInformation()
+    {
+        SageGameLogging.LogSystemInfoHeader(_logger);
+
+        LogOperatingSystemInformation();
+        LogRuntimeInformation();
+        LogHardwareInformation();
+        LogSystemInformation();
+        LogDirectoryInformation();
+        LogProcessInformation();
+        LogMemoryInformation();
 
         SageGameLogging.LogSystemInfoFooter(_logger);
     }

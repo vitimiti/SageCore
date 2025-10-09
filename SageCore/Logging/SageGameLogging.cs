@@ -76,6 +76,72 @@ internal static partial class SageGameLogging
     [LoggerMessage(Level = LogLevel.Information, Message = "System Directory: {SystemDirectory}")]
     public static partial void LogSystemDirectory(ILogger logger, string systemDirectory);
 
+    [LoggerMessage(Level = LogLevel.Information, Message = "Application Data Directory: {ApplicationDataDirectory}")]
+    public static partial void LogApplicationDataDirectory(ILogger logger, string applicationDataDirectory);
+
+    [LoggerMessage(
+        Level = LogLevel.Information,
+        Message = "Local Application Data Directory: {LocalApplicationDataDirectory}"
+    )]
+    public static partial void LogLocalApplicationDataDirectory(ILogger logger, string localApplicationDataDirectory);
+
+    [LoggerMessage(
+        Level = LogLevel.Information,
+        Message = "Common Application Data Directory: {CommonApplicationDataDirectory}"
+    )]
+    public static partial void LogCommonApplicationDataDirectory(ILogger logger, string commonApplicationDataDirectory);
+
+    [LoggerMessage(Level = LogLevel.Information, Message = "Desktop Directory: {DesktopDirectory}")]
+    public static partial void LogDesktopDirectory(ILogger logger, string desktopDirectory);
+
+    [LoggerMessage(Level = LogLevel.Information, Message = "Documents Directory: {DocumentsDirectory}")]
+    public static partial void LogDocumentsDirectory(ILogger logger, string documentsDirectory);
+
+    [LoggerMessage(Level = LogLevel.Information, Message = "User Profile Directory: {UserProfileDirectory}")]
+    public static partial void LogUserProfileDirectory(ILogger logger, string userProfileDirectory);
+
+    [LoggerMessage(Level = LogLevel.Information, Message = "Program Files Directory: {ProgramFilesDirectory}")]
+    public static partial void LogProgramFilesDirectory(ILogger logger, string programFilesDirectory);
+
+    [LoggerMessage(Level = LogLevel.Information, Message = "Program Files (x86) Directory: {ProgramFilesX86Directory}")]
+    public static partial void LogProgramFilesX86Directory(ILogger logger, string programFilesX86Directory);
+
+    [LoggerMessage(
+        Level = LogLevel.Information,
+        Message = "Common Program Files Directory: {CommonProgramFilesDirectory}"
+    )]
+    public static partial void LogCommonProgramFilesDirectory(ILogger logger, string commonProgramFilesDirectory);
+
+    [LoggerMessage(
+        Level = LogLevel.Information,
+        Message = "Common Program Files (x86) Directory: {CommonProgramFilesX86Directory}"
+    )]
+    public static partial void LogCommonProgramFilesX86Directory(ILogger logger, string commonProgramFilesX86Directory);
+
+    [LoggerMessage(Level = LogLevel.Information, Message = "Temporary Directory: {TemporaryDirectory}")]
+    public static partial void LogTemporaryDirectory(ILogger logger, string temporaryDirectory);
+
+    [LoggerMessage(Level = LogLevel.Information, Message = "My Documents Directory: {MyDocumentsDirectory}")]
+    public static partial void LogMyDocumentsDirectory(ILogger logger, string myDocumentsDirectory);
+
+    [LoggerMessage(Level = LogLevel.Information, Message = "My Music Directory: {MyMusicDirectory}")]
+    public static partial void LogMyMusicDirectory(ILogger logger, string myMusicDirectory);
+
+    [LoggerMessage(Level = LogLevel.Information, Message = "My Pictures Directory: {MyPicturesDirectory}")]
+    public static partial void LogMyPicturesDirectory(ILogger logger, string myPicturesDirectory);
+
+    [LoggerMessage(Level = LogLevel.Information, Message = "My Videos Directory: {MyVideosDirectory}")]
+    public static partial void LogMyVideosDirectory(ILogger logger, string myVideosDirectory);
+
+    [LoggerMessage(Level = LogLevel.Information, Message = "Startup Directory: {StartupDirectory}")]
+    public static partial void LogStartupDirectory(ILogger logger, string startupDirectory);
+
+    [LoggerMessage(Level = LogLevel.Information, Message = "Start Menu Directory: {StartMenuDirectory}")]
+    public static partial void LogStartMenuDirectory(ILogger logger, string startMenuDirectory);
+
+    [LoggerMessage(Level = LogLevel.Information, Message = "Common Start Menu Directory: {CommonStartMenuDirectory}")]
+    public static partial void LogCommonStartMenuDirectory(ILogger logger, string commonStartMenuDirectory);
+
     [LoggerMessage(Level = LogLevel.Information, Message = "Current Process: {ProcessName} (PID: {ProcessId})")]
     public static partial void LogCurrentProcess(ILogger logger, string processName, int processId);
 
