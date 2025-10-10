@@ -38,10 +38,10 @@ public sealed class SageGame : IDisposable
     /// </summary>
     /// <param name="logger">The logger instance for logging game events.</param>
     /// <param name="options">The game options for configuring the game instance. If null, default options will be used.</param>
-    public SageGame([NotNull] ILogger logger, SageGameOptions? options = null)
+    public SageGame([NotNull] ILogger logger, Action<SageGameOptions>? options = null)
     {
         _logger = logger;
-        _options = options ?? new SageGameOptions();
+        options?.Invoke(_options);
 
         LogSystemInformation();
 
@@ -49,7 +49,7 @@ public sealed class SageGame : IDisposable
 
         _gameTime = new GameTime(_logger);
         _platformSystem = new PlatformSystem(_logger, _options.AppOptions);
-        _screen = new Screen(_options.ScreenOptions);
+        _screen = new Screen(_logger, _options.ScreenOptions);
 
         CommonLogging.LogInitialized(_logger, nameof(SageGame));
     }
@@ -72,6 +72,7 @@ public sealed class SageGame : IDisposable
         while (_isRunning)
         {
             Update();
+            Draw();
 
             // Log each iteration at debug level (can be useful for debugging but not too verbose)
             SageGameLogging.LogGameLoopIteration(
@@ -131,6 +132,19 @@ public sealed class SageGame : IDisposable
 
         // Log after update so callers can see post-update timings
         SageGameLogging.LogUpdateFinished(
+            _logger,
+            _gameTime.TotalTime.TotalMilliseconds,
+            _gameTime.DeltaTime.TotalMilliseconds
+        );
+    }
+
+    private void Draw()
+    {
+        SageGameLogging.LogDrawStarted(_logger);
+
+        _screen.Draw();
+
+        SageGameLogging.LogDrawFinished(
             _logger,
             _gameTime.TotalTime.TotalMilliseconds,
             _gameTime.DeltaTime.TotalMilliseconds

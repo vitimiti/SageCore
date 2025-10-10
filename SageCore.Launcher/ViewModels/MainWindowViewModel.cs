@@ -45,7 +45,7 @@ internal sealed partial class MainWindowViewModel : ViewModelBase
 
         try
         {
-            using SageGame sageGame = new(logger);
+            using SageGame sageGame = new(logger, (options) => options.ScreenOptions.FullScreen = false);
             GameLogging.LogGameInstanceCreated(logger);
             sageGame.Run();
             GameLogging.LogGameRunEnded(logger);

@@ -28,7 +28,10 @@ public class SageGameOptions
     /// <summary>
     /// Gets or sets the screen configuration options.
     /// </summary>
-    public ScreenOptions? ScreenOptions { get; set; }
+    /// <remarks>
+    /// Default values are provided by the <see cref="ScreenOptions"/> class.
+    /// </remarks>
+    public ScreenOptions ScreenOptions { get; set; } = new();
 
     /// <summary>
     /// Returns a JSON string representation of the screen options.

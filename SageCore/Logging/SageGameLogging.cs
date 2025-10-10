@@ -39,6 +39,15 @@ internal static partial class SageGameLogging
     )]
     public static partial void LogUpdateFinished(ILogger logger, double totalTimeMs, double deltaTimeMs);
 
+    [LoggerMessage(Level = LogLevel.Trace, Message = "Draw started")]
+    public static partial void LogDrawStarted(ILogger logger);
+
+    [LoggerMessage(
+        Level = LogLevel.Trace,
+        Message = "Draw finished - Total time: {TotalTimeMs}ms, Delta: {DeltaTimeMs}ms"
+    )]
+    public static partial void LogDrawFinished(ILogger logger, double totalTimeMs, double deltaTimeMs);
+
     [LoggerMessage(Level = LogLevel.Debug, Message = "Platform system disposed")]
     public static partial void LogPlatformSystemDisposed(ILogger logger);
 
