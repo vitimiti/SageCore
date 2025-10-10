@@ -64,15 +64,16 @@ internal sealed partial class MainWindowViewModel : ViewModelBase
         GameLogging.LogGameInstanceDisposed(logger);
     }
 
+    // TODO: Add games names and info to the logging
     private static partial class GameLogging
     {
-        [LoggerMessage(Level = LogLevel.Debug, Message = "Game instance created.")]
+        [LoggerMessage(Level = LogLevel.Information, Message = "Game instance created.")]
         public static partial void LogGameInstanceCreated(ILogger logger);
 
-        [LoggerMessage(Level = LogLevel.Debug, Message = "Game instance disposed.")]
+        [LoggerMessage(Level = LogLevel.Information, Message = "Game instance disposed.")]
         public static partial void LogGameInstanceDisposed(ILogger logger);
 
-        [LoggerMessage(Level = LogLevel.Debug, Message = "Game run ended.")]
+        [LoggerMessage(Level = LogLevel.Information, Message = "Game run ended.")]
         public static partial void LogGameRunEnded(ILogger logger);
 
         [LoggerMessage(Level = LogLevel.Error, Message = "An error occurred while running the game: {ErrorMessage}")]

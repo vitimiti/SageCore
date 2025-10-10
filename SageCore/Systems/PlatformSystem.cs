@@ -117,11 +117,11 @@ internal sealed class PlatformSystem : IDisposable
 
     private void InitializeSdlLogging()
     {
+        // Make SDL log messages go through our logging system with INFO priority and above.
         PlatformLogging.LogInitializingSdlLogging(_logger);
 
-        // TODO: Change the level depending on the chosen log level. Make Info the minimum.
-        Sdl.SetLogPriorities(Sdl.LogPriority.Trace);
-        PlatformLogging.LogSdlLogPrioritySet(_logger, Sdl.LogPriority.Trace);
+        Sdl.SetLogPriorities(Sdl.LogPriority.Info);
+        PlatformLogging.LogSdlLogPrioritySet(_logger, Sdl.LogPriority.Info);
 
         Sdl.SetLogOutputFunction(
             (category, priority, message) =>
