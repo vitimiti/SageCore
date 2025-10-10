@@ -6,6 +6,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.Extensions.Logging;
 using SageCore.Logging;
 using SageCore.NativeMethods.Sdl3;
@@ -18,7 +19,7 @@ internal sealed class PlatformSystem : IDisposable
     private readonly ILogger _logger;
     private readonly AppOptions _options;
 
-    public PlatformSystem(ILogger logger, AppOptions options)
+    public PlatformSystem([NotNull] ILogger logger, [NotNull] AppOptions options)
     {
         _logger = logger;
         _options = options;

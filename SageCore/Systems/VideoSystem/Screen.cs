@@ -31,12 +31,12 @@ internal sealed class Screen : IDisposable
     /// Initializes a new instance of the <see cref="Screen"/> class.
     /// </summary>
     /// <param name="logger">The logger to use for logging.</param>
-    /// <param name="options">The screen options to configure the screen. If null, default options will be used.</param>
+    /// <param name="options">The screen options to configure the screen.</param>
     /// <exception cref="InvalidOperationException">Thrown if the SDL video subsystem or GPU device fails to initialize.</exception>
-    public Screen([NotNull] ILogger logger, ScreenOptions? options)
+    public Screen([NotNull] ILogger logger, [NotNull] ScreenOptions options)
     {
         _logger = logger;
-        _options = options ?? new ScreenOptions();
+        _options = options;
 
         CommonLogging.LogInitializing(_logger, nameof(Screen));
 
