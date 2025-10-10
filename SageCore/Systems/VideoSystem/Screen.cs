@@ -52,9 +52,9 @@ internal sealed class Screen : IDisposable
 #endif
 
         _gpuDevice = Sdl.GpuDeviceSafeHandle.Create(
-            Sdl.GpuShaderFormatSpirv | Sdl.GpuShaderFormatDxil | Sdl.GpuShaderFormatMsl,
+            Sdl.GpuShaderFormatSpirv,
             debugMode,
-            name: null
+            "vulkan" // Vulkan support only to simplify initial implementation
         );
 
         if (_gpuDevice.IsInvalid)

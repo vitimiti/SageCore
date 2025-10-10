@@ -14,8 +14,6 @@ namespace SageCore.NativeMethods.Sdl3;
 internal static partial class Sdl
 {
     public const uint GpuShaderFormatSpirv = 1U << 1;
-    public const uint GpuShaderFormatDxil = 1U << 3;
-    public const uint GpuShaderFormatMsl = 1U << 4;
 
     public enum GpuLoadOp
     {
