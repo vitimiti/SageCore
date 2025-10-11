@@ -11,4 +11,5 @@ namespace SageCore.Compression.Lzhl;
 internal static class Common
 {
     public const int HuffSymbolsCount = 256 + 16 + 2; // 256 literals + 16 length codes + 2 special codes
+    public const int HuffRecalcLength = 0x10_00;
 }
