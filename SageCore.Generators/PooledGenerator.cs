@@ -58,7 +58,7 @@ public sealed class PooledGenerator : IIncrementalGenerator
             using System.Diagnostics.CodeAnalysis;
             using Microsoft.Extensions.ObjectPool;
             using SageCore.Attributes;
-            using SageCore.Abstractions;
+            using SageCore.Abstractions.Utilities;
 
             {{nSpaceOpen}};
 

@@ -6,7 +6,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-using SageCore.Abstractions;
+using SageCore.Abstractions.Utilities;
 using SageCore.Attributes;
 
 namespace SageCore.Utilities;

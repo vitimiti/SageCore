@@ -6,7 +6,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace SageCore.Abstractions;
+namespace SageCore.Abstractions.Utilities;
 
 /// <summary>
 /// Defines a contract for objects that can be reset when returned to an object pool.
