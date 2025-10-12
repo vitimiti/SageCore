@@ -40,13 +40,15 @@ internal sealed class Decompressor : Buffer
     /// <param name="destination">The destination buffer to hold decompressed data.</param>
     /// <param name="source">The source buffer containing compressed data.</param>
     /// <returns>True if decompression is successful; otherwise, false.</returns>
+    /// <param name="bytesWritten">The number of bytes written to the destination buffer.</param>
     /// <exception cref="ArgumentNullException">Thrown when destination or source is null.</exception>
     /// <exception cref="ArgumentOutOfRangeException">Thrown when destinationSize is negative.</exception>
     /// <exception cref="InvalidOperationException">Thrown when an internal invariant is violated during decompression.</exception>
-    public bool TryDecompress(Span<byte> destination, ReadOnlySpan<byte> source)
+    public bool TryDecompress(Span<byte> destination, ReadOnlySpan<byte> source, out int bytesWritten)
     {
         var sourceEnd = source.Length;
         var destinationEnd = destination.Length;
+        bytesWritten = 0;
 
         _bits = 0;
         _bitsCount = 0;
@@ -269,6 +271,7 @@ internal sealed class Decompressor : Buffer
             dstIndex += matchLength;
         }
 
+        bytesWritten = dstIndex;
         return true;
     }
 
