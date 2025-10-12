@@ -1,6 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <ItemGroup>
     <ProjectReference Include="..\SageCore.FileSystem.Utilities\SageCore.FileSystem.Utilities.csproj" />
+    <ProjectReference Include="..\SageCore.Extensions\SageCore.Extensions.csproj" />
   </ItemGroup>
   <PropertyGroup>
     <TargetFramework>net9.0</TargetFramework>

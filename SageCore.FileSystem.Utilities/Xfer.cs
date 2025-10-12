@@ -8,4 +8,12 @@
 
 namespace SageCore.FileSystem.Utilities;
 
-public class Xfer { }
+public abstract class Xfer
+{
+    /// <summary>
+    /// Handles user-defined data processing.
+    /// </summary>
+    /// <param name="data">The data to be processed.</param>
+    /// <remarks>This method must be implemented by derived classes to define specific data handling behavior.</remarks>
+    public abstract void User(Span<byte> data);
+}
