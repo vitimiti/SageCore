@@ -18,6 +18,12 @@ internal sealed class Compressor : Buffer
 
     public static int CalculateMaximumBufferSize(int rawSize) => Encoder.CalculateMaximumBufferSize(rawSize);
 
+    /// <summary>
+    /// Compresses the specified source data into the destination buffer.
+    /// </summary>
+    /// <param name="destination">The destination buffer to hold compressed data.</param>
+    /// <param name="source">The source buffer containing data to be compressed.</param>
+    /// <returns>The size of the compressed data written to the destination buffer.</returns>
     public long Compress(Span<byte> destination, ReadOnlySpan<byte> source)
     {
         Encoder coder = new(_stat, destination.ToArray());
