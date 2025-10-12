@@ -43,9 +43,6 @@ bld/
 # Visual Studio 2017 auto generated files
 Generated\ Files/
 
-# Generated files as defined in the project files
-GeneratedFiles/
-
 # MSTest test Results
 [Tt]est[Rr]esult*/
 [Bb]uild[Ll]og.*
