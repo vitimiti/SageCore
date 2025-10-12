@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------
-// <copyright file="SubystemBase.cs" company="SageCore Contributors">
+// <copyright file="SubsystemBase.cs" company="SageCore Contributors">
 // 2025 Copyright (c) SageCore Contributors. All rights reserved.
 // Licensed under the MIT license.
 // See LICENSE.md for more information.
@@ -8,11 +8,11 @@
 
 namespace SageCore.Subsystems;
 
-internal abstract class SubystemBase : IDisposable
+internal abstract class SubsystemBase : IDisposable
 {
     private bool _disposedValue;
 
-    protected SubystemBase() { }
+    protected SubsystemBase() { }
 
     public string? Name { get; set; }
 
