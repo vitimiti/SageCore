@@ -1,7 +1,10 @@
 <Solution>
   <Project Path="SageCore.Options/SageCore.Options.csproj" />
   <Project Path="SageCore/SageCore.csproj" />
+  <Project Path="SageCore.Abstractions/SageCore.Abstractions.csproj" />
+  <Project Path="SageCore.Attributes/SageCore.Attributes.csproj" />
   <Project Path="SageCore.Compression/SageCore.Compression.csproj" />
   <Project Path="SageCore.Extensions/SageCore.Extensions.csproj" />
+  <Project Path="SageCore.Generators/SageCore.Generators.csproj" />
   <Project Path="SageCore.Launcher/SageCore.Launcher.csproj" />
 </Solution>
