@@ -14,4 +14,5 @@ internal static class Constants
     public const int HuffRecalcLength = 0x10_00;
     public const int BufferBits = 16;
     public const int BufferSize = 1 << BufferBits;
+    public const int BufferMask = BufferSize - 1;
 }
