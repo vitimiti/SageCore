@@ -6,6 +6,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 #pragma warning disable SA1008 // Opening parenthesis should be spaced correctly
 using DispItem = (int BitsCount, ushort Bits);
@@ -14,6 +15,7 @@ using MatchOverItem = (int Symbol, int BitsCount, ushort Bits);
 
 namespace SageCore.Compression.Lzhl;
 
+[DebuggerDisplay("Bits={_bits}, BitsCount={_bitsCount}, DestinationIndex={_destinationIndex}, NextStat={_nextStat}")]
 internal sealed class Encoder
 {
     public const int MaxMatchOver = 517;
