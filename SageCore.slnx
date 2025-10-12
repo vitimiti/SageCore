@@ -1,4 +1,5 @@
 <Solution>
+  <Project Path="SageCore.Models/SageCore.Models.csproj" />
   <Project Path="SageCore.Options/SageCore.Options.csproj" />
   <Project Path="SageCore/SageCore.csproj" />
   <Project Path="SageCore.Abstractions/SageCore.Abstractions.csproj" />
