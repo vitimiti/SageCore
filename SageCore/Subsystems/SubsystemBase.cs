@@ -8,13 +8,25 @@
 
 namespace SageCore.Subsystems;
 
+/// <summary>
+/// The base class for all subsystems in the game engine.
+/// </summary>
 internal abstract class SubsystemBase : IDisposable
 {
     private bool _disposedValue;
 
     protected SubsystemBase() { }
 
+    /// <summary>
+    /// Gets or sets the name of the subsystem.
+    /// </summary>
     public string? Name { get; set; }
+
+    public abstract void Initialize();
+
+    public virtual void PostProcessLoad() { }
+
+    public abstract void Reset();
 
     public void Dispose()
     {
@@ -23,15 +35,9 @@ internal abstract class SubsystemBase : IDisposable
         GC.SuppressFinalize(this);
     }
 
-    protected abstract void Initialize();
-
-    protected virtual void PostProcessLoad() { }
-
-    protected abstract void Reset();
-
     protected abstract void Update();
 
-    protected virtual void Draw() => throw new NotSupportedException("Draw not supported for this subsystem.");
+    protected abstract void Draw();
 
     protected virtual void Dispose(bool disposing)
     {
