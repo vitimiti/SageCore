@@ -10,7 +10,7 @@ using System;
 using System.Diagnostics.CodeAnalysis;
 using Avalonia.Controls;
 using Microsoft.Extensions.Logging;
-using SageCore.Utilities;
+using SageCore.Utils;
 
 namespace SageCore.Launcher.ViewModels;
 

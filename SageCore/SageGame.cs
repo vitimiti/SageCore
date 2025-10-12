@@ -14,7 +14,7 @@ using SageCore.Logging;
 using SageCore.NativeMethods.Sdl3;
 using SageCore.Systems;
 using SageCore.Systems.VideoSystem;
-using SageCore.Utilities;
+using SageCore.Utils;
 
 namespace SageCore;
 

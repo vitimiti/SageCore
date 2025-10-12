@@ -10,7 +10,7 @@ using System.Diagnostics;
 using Microsoft.Extensions.Logging;
 using SageCore.Logging;
 
-namespace SageCore.Utilities;
+namespace SageCore.Utils;
 
 /// <summary>
 /// Provides timing values for the game loop, including total elapsed time and delta time between frames.
