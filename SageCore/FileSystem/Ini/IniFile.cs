@@ -210,6 +210,10 @@ internal class IniFile : IDisposable
     /// <param name="subDirs">Whether to include subdirectories.</param>
     /// <param name="loadType">The type of loading behavior.</param>
     /// <param name="xfer">An optional Xfer object for data transfer.</param>
+    /// <exception cref="ArgumentException">Thrown if <paramref name="dirName"/> is null, empty, or whitespace.</exception>
+    /// <remarks>
+    /// This method loads all INI files in the specified directory, optionally including subdirectories.
+    /// </remarks>
     public void LoadDirectory([NotNull] string dirName, bool subDirs, IniLoadType loadType, Xfer? xfer = null)
     {
         if (string.IsNullOrWhiteSpace(dirName))
@@ -551,10 +555,6 @@ internal class IniFile : IDisposable
         }
     }
 
-    /// <summary>
-    /// Disposes of the resources used by the Ini instance.
-    /// </summary>
-    /// <param name="disposing">Indicates whether the method is called from Dispose (true) or from a finalizer (false).</param>
     protected virtual void Dispose(bool disposing)
     {
         if (_disposedValue)
@@ -577,6 +577,12 @@ internal class IniFile : IDisposable
         _disposedValue = true;
     }
 
+    /// <summary>
+    /// Finds the block parse delegate for the specified token.
+    /// </summary>
+    /// <param name="token">The token to find the block parse for.</param>
+    /// <returns>The block parse delegate if found; otherwise, <see langword="null"/>.</returns>
+    /// <remarks>This method searches the type table for a matching token and returns the associated parse delegate.</remarks>
     private static BlockParse? FindBlockParse([NotNull] string token)
     {
         foreach (BlockParseStruct parse in TypeTable)
