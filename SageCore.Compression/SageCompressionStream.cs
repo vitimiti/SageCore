@@ -327,6 +327,26 @@ public sealed class SageCompressionStream : Stream
             return;
         }
 
+        if (_compressionType is CompressionType.RefPack)
+        {
+            ReadOnlySpan<byte> source = buffer.AsSpan(offset, count);
+            var maxDestination = EstimateMaxCompressedSize(count, _compressionType);
+            if (maxDestination < 0)
+            {
+                throw new InvalidOperationException("Invalid estimated compressed size.");
+            }
+
+            var destination = new byte[maxDestination];
+            var compressedSize = Refpack.Encode(destination, source);
+            if (compressedSize <= 0 || compressedSize > maxDestination)
+            {
+                throw new InvalidDataException("RefPack Compression failed.");
+            }
+
+            WriteHeaderAndPayload("EAR\0"u8, count, destination, compressedSize);
+            return;
+        }
+
         if (_compressionType is CompressionType.NoxLzh)
         {
             ReadOnlySpan<byte> source = buffer.AsSpan(offset, count);

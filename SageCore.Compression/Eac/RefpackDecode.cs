@@ -12,6 +12,16 @@ namespace SageCore.Compression.Eac;
 
 internal static partial class Refpack
 {
+    /// <summary>
+    /// Decompresses Refpack compressed data into the provided destination span.
+    /// </summary>
+    /// <param name="destination">The span to write the decompressed data to.</param>
+    /// <param name="compressedData">The Refpack compressed data to decompress.</param>
+    /// <returns>The number of bytes written to the destination span.</returns>
+    /// <exception cref="ArgumentException">Thrown if the compressed data is not a valid Refpack stream.</exception>
+    /// <remarks>
+    /// This method assumes that the destination span is large enough to hold the decompressed data.
+    /// </remarks>
     public static int Decode(Span<byte> destination, ReadOnlySpan<byte> compressedData)
     {
         if (!IsValid(compressedData))
