@@ -4,4 +4,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SageCore.Utilities\SageCore.Utilities.csproj" />
+  </ItemGroup>
 </Project>

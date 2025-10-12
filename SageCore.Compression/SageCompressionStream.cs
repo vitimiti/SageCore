@@ -9,6 +9,7 @@
 using System.Buffers.Binary;
 using System.Diagnostics.CodeAnalysis;
 using System.IO.Compression;
+using SageCore.Compression.Eac;
 using SageCore.Compression.Lzhl;
 
 namespace SageCore.Compression;
@@ -173,6 +174,28 @@ public sealed class SageCompressionStream : Stream
             return _baseStream.Read(buffer, offset, count);
         }
 
+        if (_compressionType is CompressionType.RefPack)
+        {
+            (var expectedDecompressedInt, var compressed) = ReadHeaderAndPayload(t => t == CompressionType.RefPack);
+
+            Span<byte> callerSpan = buffer.AsSpan(offset, count);
+
+            if (count >= expectedDecompressedInt)
+            {
+                return Refpack.Decode(callerSpan, compressed);
+            }
+
+            var decompressed = new byte[expectedDecompressedInt];
+            var bytesWritten = Refpack.Decode(decompressed, compressed);
+            var toCopy = Math.Min(bytesWritten, count);
+            if (toCopy > 0)
+            {
+                Array.Copy(decompressed, 0, buffer, offset, toCopy);
+            }
+
+            return toCopy;
+        }
+
         if (_compressionType is CompressionType.NoxLzh)
         {
             (var expectedDecompressedInt, var compressed) = ReadHeaderAndPayload(t => t == CompressionType.NoxLzh);
@@ -199,7 +222,7 @@ public sealed class SageCompressionStream : Stream
                 throw new InvalidDataException("NOXLZH Decompression failed.");
             }
 
-            var toCopy = Math.Min(bytesWritten2, count);
+            var toCopy = int.Min(bytesWritten2, count);
             if (toCopy > 0)
             {
                 Array.Copy(decompressed, 0, buffer, offset, toCopy);
@@ -244,7 +267,7 @@ public sealed class SageCompressionStream : Stream
 
             var decompressed = new byte[expectedDecompressedInt];
             var bytesRead = zlib.Read(decompressed);
-            var toCopy2 = Math.Min(bytesRead, count);
+            var toCopy2 = int.Min(bytesRead, count);
             if (toCopy2 > 0)
             {
                 Array.Copy(decompressed, 0, buffer, offset, toCopy2);

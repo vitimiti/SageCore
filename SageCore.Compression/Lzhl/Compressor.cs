@@ -84,7 +84,7 @@ internal sealed class Compressor : Buffer
                     );
 
                     var availableAfter = sourceLeft - rawCount - 1;
-                    var updateLength = int.Min(matchLength - 1, Math.Max(0, availableAfter));
+                    var updateLength = int.Min(matchLength - 1, int.Max(0, availableAfter));
                     hash = UpdateTable(hash, source.Slice(sourceIndex + rawCount + 1, updateLength), Position + 1u);
 
                     ToBuffer(source.Slice(sourceIndex + rawCount, matchLength));
