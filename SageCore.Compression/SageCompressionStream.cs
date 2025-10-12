@@ -57,6 +57,14 @@ public sealed class SageCompressionStream : Stream
         {
             throw new ArgumentException("The base stream must be seekable.", nameof(baseStream));
         }
+
+        // TODO: Support BinaryTree and HuffmanWithRunLength compressions
+        if (_compressionType is CompressionType.BinaryTree or CompressionType.HuffmanWithRunLength)
+        {
+            throw new NotSupportedException(
+                $"The compression type '{_compressionType}' is not supported for compression YET. It is in the TODO list."
+            );
+        }
     }
 
     /// <summary>
@@ -102,6 +110,14 @@ public sealed class SageCompressionStream : Stream
         if (!baseStream.CanSeek)
         {
             throw new ArgumentException("The base stream must be seekable.", nameof(baseStream));
+        }
+
+        // TODO: Support BinaryTree and HuffmanWithRunLength compressions
+        if (_compressionType is CompressionType.BinaryTree or CompressionType.HuffmanWithRunLength)
+        {
+            throw new NotSupportedException(
+                $"The compression type '{_compressionType}' is not supported for compression YET. It is in the TODO list."
+            );
         }
     }
 
