@@ -14,9 +14,15 @@ namespace SageCore.Subsystems;
 
 internal sealed class SubsystemList : IDisposable
 {
+    private static SubsystemList? _instance;
+
     private readonly List<SubsystemBase> _subsystems = [];
 
     private bool _disposed;
+
+    private SubsystemList() { }
+
+    public static SubsystemList Instance => _instance ??= new SubsystemList();
 
     public ReadOnlyCollection<SubsystemBase> Subsystems => _subsystems.AsReadOnly();
 
