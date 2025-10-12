@@ -7,7 +7,7 @@
 // -----------------------------------------------------------------------
 
 using System.Collections.ObjectModel;
-using SageCore.Utilities;
+using SageCore.FileSystem.Utilities;
 
 namespace SageCore.Subsystems;
 

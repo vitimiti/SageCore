@@ -3,5 +3,6 @@
   <Project Path="SageCore/SageCore.csproj" />
   <Project Path="SageCore.Compression/SageCore.Compression.csproj" />
   <Project Path="SageCore.Extensions/SageCore.Extensions.csproj" />
+  <Project Path="SageCore.FileSystem.Utilities/SageCore.FileSystem.Utilities.csproj" />
   <Project Path="SageCore.Launcher/SageCore.Launcher.csproj" />
 </Solution>
