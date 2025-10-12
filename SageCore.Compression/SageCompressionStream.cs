@@ -35,6 +35,7 @@ public sealed class SageCompressionStream : Stream
     /// <exception cref="ArgumentException">The base stream must be seekable.</exception>
     /// <exception cref="ArgumentException">The base stream must be writable when in compression mode.</exception>
     /// <exception cref="ArgumentException">The base stream must be readable when in decompression mode.</exception>
+    /// <exception cref="NotSupportedException">The compression type is not supported.</exception>
     /// <remarks>If the stream is opened in compression mode, the compression type must be specified.</remarks>
     public SageCompressionStream([NotNull] Stream baseStream, CompressionType compressionType, bool leaveOpen = false)
     {
@@ -76,6 +77,7 @@ public sealed class SageCompressionStream : Stream
     /// <exception cref="ArgumentException">The base stream must be seekable.</exception>
     /// <exception cref="ArgumentException">The base stream must be readable when in decompression mode.</exception>
     /// <exception cref="ArgumentException">The base stream must be writable when in compression mode.</exception>
+    /// <exception cref="NotSupportedException">The compression type is not supported.</exception>
     /// <remarks>If the stream is opened in decompression mode, the compression type is auto-detected from the stream header.</remarks>
     public SageCompressionStream([NotNull] Stream baseStream, CompressionMode compressionMode, bool leaveOpen = false)
     {
@@ -173,6 +175,21 @@ public sealed class SageCompressionStream : Stream
         _baseStream.Flush();
     }
 
+    /// <summary>
+    /// Reads a sequence of bytes from the current stream and advances the position within the stream by the number of bytes read.
+    /// </summary>
+    /// <param name="buffer">The buffer to write the decompressed data to.</param>
+    /// <param name="offset">The byte offset in <paramref name="buffer"/> at which to begin writing data.</param>
+    /// <param name="count">The maximum number of bytes to read.</param>
+    /// <returns>The total number of bytes read into the buffer. This can be less than the number of bytes requested if that many bytes are not currently available, or zero (0) if the end of the stream has been reached.</returns>
+    /// <exception cref="ObjectDisposedException">The stream has been disposed.</exception>
+    /// <exception cref="ArgumentOutOfRangeException">Offset or count is negative, or offset + count is greater than the buffer length.</exception>
+    /// <exception cref="NotSupportedException">The stream is not readable.</exception>
+    /// <exception cref="InvalidOperationException">The estimated compressed size is invalid.</exception>
+    /// <exception cref="InvalidDataException">Decompression failed.</exception>
+    /// <remarks>
+    /// This method supports reading from streams compressed with RefPack, NOXLZH, and ZLib (levels 1-9).
+    /// </remarks>
     public override int Read([NotNull] byte[] buffer, int offset, int count)
     {
         ObjectDisposedException.ThrowIf(_disposed, this);
@@ -309,6 +326,20 @@ public sealed class SageCompressionStream : Stream
     public override void SetLength(long value) =>
         throw new NotSupportedException("Setting the length is not supported.");
 
+    /// <summary>
+    /// Writes a sequence of bytes to the current stream and advances the current position within this stream by the number of bytes written.
+    /// </summary>
+    /// <param name="buffer">The buffer containing data to write to the stream.</param>
+    /// <param name="offset">The zero-based byte offset in <paramref name="buffer"/> at which to begin copying bytes to the stream.</param>
+    /// <param name="count">The number of bytes to write to the stream.</param>
+    /// <exception cref="ObjectDisposedException">The stream has been disposed.</exception>
+    /// <exception cref="ArgumentOutOfRangeException">Offset or count is negative, or offset + count is greater than the buffer length.</exception>
+    /// <exception cref="NotSupportedException">The stream is not writable.</exception>
+    /// <exception cref="InvalidOperationException">The estimated compressed size is invalid.</exception>
+    /// <exception cref="InvalidDataException">Compression failed.</exception>
+    /// <remarks>
+    /// This method supports writing to streams compressed with RefPack, NOXLZH, and ZLib (levels 1-9).
+    /// </remarks>
     public override void Write([NotNull] byte[] buffer, int offset, int count)
     {
         ObjectDisposedException.ThrowIf(_disposed, this);
