@@ -33,7 +33,8 @@ internal class HuffStat()
         ArgumentOutOfRangeException.ThrowIfGreaterThan(13, n / 9);
         ArgumentOutOfRangeException.ThrowIfLessThanOrEqual(40, n / 9);
 
-        for (var i = 40; i > 0; i /= 3) // 40, 13, 4, 1
+        // 40, 13, 4, 1
+        for (var i = 40; i > 0; i /= 3)
         {
             for (var j = i + 1; j <= n; j++)
             {

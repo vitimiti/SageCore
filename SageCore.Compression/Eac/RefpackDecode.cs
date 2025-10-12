@@ -36,9 +36,12 @@ internal static partial class Refpack
         type = (type << 8) + compressedData[compressedDataIndex++];
 
         int unpackedLength;
-        if ((type & 0x80_00) != 0) // 4-byte size field
+
+        // 4-byte size field
+        if ((type & 0x80_00) != 0)
         {
-            if ((type & 0x01_00) != 0) // skip unpackedLength field
+            // skip unpackedLength field
+            if ((type & 0x01_00) != 0)
             {
                 compressedDataIndex += 4;
             }
@@ -48,7 +51,8 @@ internal static partial class Refpack
         }
         else
         {
-            if ((type & 0x01_00) != 0) // skip unpackedLength field
+            // skip unpackedLength field
+            if ((type & 0x01_00) != 0)
             {
                 compressedDataIndex += 3;
             }
@@ -68,7 +72,9 @@ internal static partial class Refpack
         {
             var first = compressedData[compressedDataIndex++];
             int run;
-            if ((first & 0x80) == 0) // short form
+
+            // short form
+            if ((first & 0x80) == 0)
             {
                 var second = compressedData[compressedDataIndex++];
                 run = first & 3;
@@ -88,7 +94,8 @@ internal static partial class Refpack
                 continue;
             }
 
-            if ((first & 0x40) == 0) // int form
+            // int form
+            if ((first & 0x40) == 0)
             {
                 var second = compressedData[compressedDataIndex++];
                 var third = compressedData[compressedDataIndex++];
@@ -109,7 +116,8 @@ internal static partial class Refpack
                 continue;
             }
 
-            if ((first & 0x20) == 0) // very int form
+            // very int form
+            if ((first & 0x20) == 0)
             {
                 var second = compressedData[compressedDataIndex++];
                 var third = compressedData[compressedDataIndex++];
