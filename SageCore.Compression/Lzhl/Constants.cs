@@ -15,4 +15,11 @@ internal static class Constants
     public const int BufferBits = 16;
     public const int BufferSize = 1 << BufferBits;
     public const int BufferMask = BufferSize - 1;
+    public const int TableBits = 15;
+    public const int TableSize = 1 << TableBits;
+    public const int SkipHash = 0x04_00;
+    public const int Match = 5;
+    public const int HashShift = 5;
+    public const int HashMask = TableSize - 1;
+    public const int Min = 4;
 }

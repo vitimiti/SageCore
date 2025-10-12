@@ -16,7 +16,7 @@ using MatchOverItem = (int Symbol, int BitsCount, ushort Bits);
 namespace SageCore.Compression.Lzhl;
 
 [DebuggerDisplay("Bits={_bits}, BitsCount={_bitsCount}, DestinationIndex={_destinationIndex}, NextStat={_nextStat}")]
-internal sealed class Encoder
+internal sealed class Encoder([NotNull] EncoderStat stat, [NotNull] byte[] destination)
 {
     public const int MaxMatchOver = 517;
     public const int MaxRaw = 64;
@@ -172,29 +172,14 @@ internal sealed class Encoder
         (9, 0x01_FF),
     ];
 
-    private readonly EncoderStat _stat;
-    private readonly short[] _sstat;
-    private readonly byte[] _destination;
-    private readonly int _offset;
-    private int _nextStat;
+    private readonly EncoderStat _stat = stat;
+    private readonly short[] _sstat = stat.Stat;
+    private int _nextStat = stat.NextStat;
     private int _destinationIndex;
     private int _bits;
     private int _bitsCount;
 
-    public Encoder([NotNull] EncoderStat stat, [NotNull] byte[] destination, int offset)
-    {
-        ArgumentOutOfRangeException.ThrowIfNegative(offset);
-        ArgumentOutOfRangeException.ThrowIfGreaterThanOrEqual(offset, destination.Length);
-
-        _destination = destination;
-        _offset = offset;
-        _stat = stat;
-        _sstat = stat.Stat;
-        _nextStat = stat.NextStat;
-        _destinationIndex = offset;
-    }
-
-    public static int CalculateMaximumBuffer(int rawSize) => rawSize + (rawSize >> 1) + 32;
+    public static int CalculateMaximumBufferSize(int rawSize) => rawSize + (rawSize >> 1) + 32;
 
     public void PutRaw(ReadOnlySpan<byte> source)
     {
@@ -257,12 +242,12 @@ internal sealed class Encoder
         Put(Constants.HuffSymbolsCount - 1);
         while (_bitsCount > 0)
         {
-            _destination[_destinationIndex++] = (byte)(_bits >> 24);
+            destination[_destinationIndex++] = (byte)(_bits >> 24);
             _bitsCount -= 8;
             _bits <<= 8;
         }
 
-        return _destinationIndex - _offset;
+        return _destinationIndex;
     }
 
     private void CalculateStat()
@@ -296,8 +281,8 @@ internal sealed class Encoder
         _bitsCount += codeBits;
         if (_bitsCount >= 16)
         {
-            _destination[_destinationIndex++] = (byte)(_bits >> 24);
-            _destination[_destinationIndex++] = (byte)(_bits >> 16);
+            destination[_destinationIndex++] = (byte)(_bits >> 24);
+            destination[_destinationIndex++] = (byte)(_bits >> 16);
             _bitsCount -= 16;
             _bits <<= 16;
         }
