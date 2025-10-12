@@ -7,6 +7,7 @@
 // -----------------------------------------------------------------------
 
 using System.Buffers.Binary;
+using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.IO.Compression;
 using SageCore.Compression.Eac;
@@ -17,6 +18,9 @@ namespace SageCore.Compression;
 /// <summary>
 /// A stream that compresses or decompresses data using a specified compression algorithm for the SageCore engine.
 /// </summary>
+[DebuggerDisplay(
+    "SageCompressionStream: Mode={_compressionMode}, Type={_compressionType}, CanRead={CanRead}, CanWrite={CanWrite}"
+)]
 public sealed class SageCompressionStream : Stream
 {
     private readonly Stream _baseStream;
