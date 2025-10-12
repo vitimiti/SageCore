@@ -12,4 +12,4 @@ using SageCore.Attributes;
 namespace SageCore.Utilities;
 
 [Pooled]
-public sealed class ThingTemplate : OverridableObject, IPooledResettable { }
+public sealed partial class ThingTemplate : OverridableObject, IPooledResettable { }

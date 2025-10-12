@@ -19,7 +19,7 @@ namespace SageCore.Utilities;
 /// It also implements the <see cref="IPooledResettable"/> interface to support resetting its state when returned to an object pool.
 /// </remarks>
 [Pooled]
-public class OverridableObject : IPooledResettable
+public partial class OverridableObject : IPooledResettable
 {
     private bool _isOverride;
 

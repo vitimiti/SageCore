@@ -58,6 +58,7 @@ public sealed class PooledGenerator : IIncrementalGenerator
             using System.Diagnostics.CodeAnalysis;
             using Microsoft.Extensions.ObjectPool;
             using SageCore.Attributes;
+            using SageCore.Abstractions;
 
             {{nSpaceOpen}};
 
@@ -134,7 +135,7 @@ public sealed class PooledGenerator : IIncrementalGenerator
     }
 
     private static bool HasPooledAttribute(INamedTypeSymbol symbol) =>
-        symbol.GetAttributes().Any(a => a.AttributeClass?.ToDisplayString() == "Razor.Attributes.PooledAttribute");
+        symbol.GetAttributes().Any(a => a.AttributeClass?.ToDisplayString() == "SageCore.Attributes.PooledAttribute");
 
     private static INamedTypeSymbol? GetPooledClassSymbolThirdStep(INamedTypeSymbol symbol) =>
         HasPooledAttribute(symbol) ? symbol : null;
