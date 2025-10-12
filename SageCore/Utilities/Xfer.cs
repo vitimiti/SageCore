@@ -6,6 +6,6 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace SageCore.Utils;
+namespace SageCore.Utilities;
 
 internal class Xfer { }

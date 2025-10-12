@@ -6,7 +6,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-using SageCore.Utilities;
+using SageCore.Extensions;
 
 namespace SageCore.Compression.Eac;
 

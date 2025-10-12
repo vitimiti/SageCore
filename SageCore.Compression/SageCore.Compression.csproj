@@ -5,6 +5,6 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\SageCore.Utilities\SageCore.Utilities.csproj" />
+    <ProjectReference Include="..\SageCore.Extensions\SageCore.Extensions.csproj" />
   </ItemGroup>
 </Project>

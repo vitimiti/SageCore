@@ -8,7 +8,7 @@
 
 using System.Buffers.Binary;
 
-namespace SageCore.Utilities;
+namespace SageCore.Extensions;
 
 /// <summary>
 /// Extension methods for <see cref="ReadOnlySpan{T}"/>.

@@ -8,7 +8,7 @@
 
 using System.Buffers.Binary;
 
-namespace SageCore.Utilities;
+namespace SageCore.Extensions;
 
 /// <summary>
 /// Provides extension methods for <see cref="Span{T}"/> to write integers in big-endian format.

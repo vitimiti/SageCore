@@ -7,6 +7,5 @@
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\SageCore.Options\SageCore.Options.csproj" />
-    <ProjectReference Include="..\SageCore.Utilities\SageCore.Utilities.csproj" />
   </ItemGroup>
 </Project>

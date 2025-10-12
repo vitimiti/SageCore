@@ -8,7 +8,6 @@
 
 using System.Reflection;
 using System.Text.Json;
-using SageCore.Utilities;
 
 namespace SageCore.Options;
 

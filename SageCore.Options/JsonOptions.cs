@@ -8,7 +8,7 @@
 
 using System.Text.Json;
 
-namespace SageCore.Utilities;
+namespace SageCore.Options;
 
 /// <summary>
 /// Provides JSON serialization options for the SageCore application.
