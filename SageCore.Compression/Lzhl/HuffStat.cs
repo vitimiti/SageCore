@@ -10,12 +10,12 @@ namespace SageCore.Compression.Lzhl;
 
 internal class HuffStat()
 {
-    public short[] Stat { get; } = new short[Common.HuffSymbolsCount];
+    public short[] Stat { get; } = new short[Constants.HuffSymbolsCount];
 
     public int MakeSortedTempStats(Span<HuffTempStat> tempStats)
     {
         var total = 0;
-        for (var i = 0; i < Common.HuffSymbolsCount; i++)
+        for (var i = 0; i < Constants.HuffSymbolsCount; i++)
         {
             tempStats[i].I = (short)i;
             tempStats[i].N = Stat[i];
@@ -24,7 +24,7 @@ internal class HuffStat()
             Stat[i] = (short)(Stat[i] >> 1);
         }
 
-        ShellSort(tempStats, Common.HuffSymbolsCount - 1);
+        ShellSort(tempStats, Constants.HuffSymbolsCount - 1);
         return total;
     }
 

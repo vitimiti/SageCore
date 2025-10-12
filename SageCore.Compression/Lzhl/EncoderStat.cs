@@ -294,10 +294,10 @@ internal sealed class EncoderStat : HuffStat
 
     public void CalculateStat(Span<int> groups)
     {
-        Span<HuffTempStat> tempStats = stackalloc HuffTempStat[Common.HuffSymbolsCount];
+        Span<HuffTempStat> tempStats = stackalloc HuffTempStat[Constants.HuffSymbolsCount];
         var total = MakeSortedTempStats(tempStats);
 
-        NextStat = Common.HuffRecalcLength;
+        NextStat = Constants.HuffRecalcLength;
         var pos = 0;
         var totalCount = 0;
         for (var group = 0; group < 14; group++)
@@ -310,9 +310,9 @@ internal sealed class EncoderStat : HuffStat
             {
                 var over = 0;
                 var itemsCount = 1 << bitsCountInner;
-                if (pos + iInner + itemsCount > Common.HuffSymbolsCount)
+                if (pos + iInner + itemsCount > Constants.HuffSymbolsCount)
                 {
-                    itemsCount = Common.HuffSymbolsCount - pos;
+                    itemsCount = Constants.HuffSymbolsCount - pos;
                     over = 1;
                 }
 
@@ -354,7 +354,7 @@ internal sealed class EncoderStat : HuffStat
         int bitsCount;
         int bitsCount15;
         int j;
-        for (j = pos; j < Common.HuffSymbolsCount; j++)
+        for (j = pos; j < Constants.HuffSymbolsCount; j++)
         {
             left += tempStats[j].N;
         }
@@ -362,7 +362,7 @@ internal sealed class EncoderStat : HuffStat
         for (bitsCount = 0; ; bitsCount++)
         {
             var itemsCount = 1 << bitsCount;
-            if (pos + i + itemsCount > Common.HuffSymbolsCount)
+            if (pos + i + itemsCount > Constants.HuffSymbolsCount)
             {
                 break;
             }
@@ -372,7 +372,7 @@ internal sealed class EncoderStat : HuffStat
                 nn += tempStats[pos + i].N;
             }
 
-            var itemsCount15 = Common.HuffSymbolsCount - (pos + i);
+            var itemsCount15 = Constants.HuffSymbolsCount - (pos + i);
             for (bitsCount15 = 0; ; bitsCount15++)
             {
                 if (1 << bitsCount15 >= itemsCount15)
@@ -411,7 +411,7 @@ internal sealed class EncoderStat : HuffStat
         {
             var bitsCountInner = groups[j];
             var itemsCount = 1 << bitsCountInner;
-            var maxK = int.Min(itemsCount, Common.HuffSymbolsCount - pos);
+            var maxK = int.Min(itemsCount, Constants.HuffSymbolsCount - pos);
             for (var k = 0; k < maxK; k++)
             {
                 var symbol = tempStats[pos + k].I;

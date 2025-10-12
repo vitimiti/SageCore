@@ -216,7 +216,7 @@ internal sealed class Encoder
 
         ArgumentOutOfRangeException.ThrowIfGreaterThan(matchOver, MaxMatchOver);
         ArgumentOutOfRangeException.ThrowIfNegative(disp);
-        ArgumentOutOfRangeException.ThrowIfGreaterThanOrEqual(disp, Common.BufferSize);
+        ArgumentOutOfRangeException.ThrowIfGreaterThanOrEqual(disp, Constants.BufferSize);
 
         PutRaw(source);
 
@@ -238,10 +238,11 @@ internal sealed class Encoder
             PutBits(item.BitsCount + 4, (uint)((item.Bits << 4) | (matchOver & 0x1F))); // matchOver % 32
         }
 
-        DispItem dispItem = DispTable[disp >> (Common.BufferBits - 7)];
-        var bitsCount = dispItem.BitsCount + (Common.BufferBits - 7);
+        DispItem dispItem = DispTable[disp >> (Constants.BufferBits - 7)];
+        var bitsCount = dispItem.BitsCount + (Constants.BufferBits - 7);
         var bits =
-            ((uint)dispItem.Bits << (Common.BufferBits - 7)) | ((uint)(disp & ((1 << (Common.BufferBits - 7)) - 1)));
+            ((uint)dispItem.Bits << (Constants.BufferBits - 7))
+            | ((uint)(disp & ((1 << (Constants.BufferBits - 7)) - 1)));
 
         if (bitsCount > 16)
         {
@@ -253,7 +254,7 @@ internal sealed class Encoder
 
     public long Flush()
     {
-        Put(Common.HuffSymbolsCount - 1);
+        Put(Constants.HuffSymbolsCount - 1);
         while (_bitsCount > 0)
         {
             _destination[_destinationIndex++] = (byte)(_bits >> 24);
@@ -267,7 +268,7 @@ internal sealed class Encoder
     private void CalculateStat()
     {
         _nextStat = 2; // To avoid recursion, >= 2
-        Put(Common.HuffSymbolsCount - 2);
+        Put(Constants.HuffSymbolsCount - 2);
 
         Span<int> groups = stackalloc int[16];
         _stat.CalculateStat(groups);
@@ -304,7 +305,7 @@ internal sealed class Encoder
 
     private void Put(ushort symbol)
     {
-        ArgumentOutOfRangeException.ThrowIfGreaterThanOrEqual(symbol, Common.HuffSymbolsCount);
+        ArgumentOutOfRangeException.ThrowIfGreaterThanOrEqual(symbol, Constants.HuffSymbolsCount);
 
         if (--_nextStat <= 0)
         {
@@ -323,7 +324,7 @@ internal sealed class Encoder
 
     private void Put(ushort symbol, int codeBits, uint code)
     {
-        ArgumentOutOfRangeException.ThrowIfGreaterThanOrEqual(symbol, Common.HuffSymbolsCount);
+        ArgumentOutOfRangeException.ThrowIfGreaterThanOrEqual(symbol, Constants.HuffSymbolsCount);
         ArgumentOutOfRangeException.ThrowIfGreaterThan(codeBits, 4);
 
         if (--_nextStat <= 0)
