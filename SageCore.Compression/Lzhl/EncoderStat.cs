@@ -10,7 +10,7 @@ using System.Diagnostics;
 
 namespace SageCore.Compression.Lzhl;
 
-internal class EncoderStat : HuffStat
+internal sealed class EncoderStat : HuffStat
 {
     public int NextStat { get; private set; }
 
