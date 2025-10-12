@@ -8,10 +8,13 @@
 
 using System.Collections.ObjectModel;
 using SageCore.FileSystem.Ini;
-using SageCore.FileSystem.Utilities;
+using SageCore.Utilities;
 
 namespace SageCore.Subsystems;
 
+/// <summary>
+/// Manages a collection of subsystems, providing methods to initialize, reset, and shut down all subsystems.
+/// </summary>
 internal sealed class SubsystemList : IDisposable
 {
     private static SubsystemList? _instance;
@@ -22,10 +25,26 @@ internal sealed class SubsystemList : IDisposable
 
     private SubsystemList() { }
 
+    /// <summary>
+    /// Gets the singleton instance of the <see cref="SubsystemList"/>.
+    /// </summary>
     public static SubsystemList Instance => _instance ??= new SubsystemList();
 
+    /// <summary>
+    /// Gets a read-only collection of the subsystems managed by this list.
+    /// </summary>
     public ReadOnlyCollection<SubsystemBase> Subsystems => _subsystems.AsReadOnly();
 
+    /// <summary>
+    /// Initializes a subsystem with optional INI file loading.
+    /// </summary>
+    /// <param name="subsystem">The subsystem to initialize.</param>
+    /// <param name="name">The name to assign to the subsystem.</param>
+    /// <param name="path1">Optional path to the first INI file to load (overwrites existing data).</param>
+    /// <param name="path2">Optional path to the second INI file to load (creates overrides).</param>
+    /// <param name="dirPath">Optional directory path to load multiple INI files from (overwrites existing data).</param>
+    /// <param name="xfer">Optional <see cref="Xfer"/> instance for custom data processing during INI loading.</param>
+    /// <exception cref="ObjectDisposedException">Thrown if the <see cref="SubsystemList"/> has been disposed.</exception>
     public void InitializeSubsystem(
         SubsystemBase subsystem,
         string name,
@@ -40,8 +59,7 @@ internal sealed class SubsystemList : IDisposable
         subsystem.Name = name;
         subsystem.Initialize();
 
-        Ini init = new();
-
+        using IniFile init = new();
         if (path1 is not null)
         {
             init.Load(path1, IniLoadType.Overwrite, xfer);

@@ -6,9 +6,9 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace SageCore.FileSystem.Utilities;
+namespace SageCore.Utilities;
 
-public abstract class Xfer
+internal abstract class Xfer
 {
     /// <summary>
     /// Handles user-defined data processing.

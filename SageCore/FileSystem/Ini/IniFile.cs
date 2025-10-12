@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------
-// <copyright file="Ini.cs" company="SageCore Contributors">
+// <copyright file="IniFile.cs" company="SageCore Contributors">
 // 2025 Copyright (c) SageCore Contributors. All rights reserved.
 // Licensed under the MIT license.
 // See LICENSE.md for more information.
@@ -9,7 +9,7 @@
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using SageCore.Extensions;
-using SageCore.FileSystem.Utilities;
+using SageCore.Utilities;
 
 namespace SageCore.FileSystem.Ini;
 
@@ -17,13 +17,13 @@ namespace SageCore.FileSystem.Ini;
 /// Provides functionality to load and parse INI files.
 /// </summary>
 [DebuggerDisplay("Ini: {_fileName,nq}, LoadType: {_loadType}, Line: {_lineNumber}")]
-public class Ini : IDisposable
+internal class IniFile : IDisposable
 {
     /// <summary>
     /// Delegate for parsing a specific block type in an INI file.
     /// </summary>
     /// <param name="init">The INI instance being parsed.</param>
-    public delegate void BlockParse(Ini init);
+    public delegate void BlockParse(IniFile init);
 
     private const int MaxCharsPerLine = 0x04_04;
 

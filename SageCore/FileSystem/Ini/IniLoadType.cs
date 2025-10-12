@@ -11,7 +11,7 @@ namespace SageCore.FileSystem.Ini;
 /// <summary>
 /// Specifies the type of loading behavior when loading INI files.
 /// </summary>
-public enum IniLoadType
+internal enum IniLoadType
 {
     /// <summary>
     /// Indicates an invalid load type.

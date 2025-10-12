@@ -10,7 +10,7 @@ namespace SageCore.FileSystem.Ini;
 
 internal static class IniObject
 {
-    public static void ParseObjectDefinition(Ini ini)
+    public static void ParseObjectDefinition(IniFile ini)
     {
         var name = ini.GetNextToken();
         throw new NotImplementedException();
