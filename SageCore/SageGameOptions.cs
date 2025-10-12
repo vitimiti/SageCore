@@ -8,7 +8,6 @@
 
 using System.Text.Json;
 using SageCore.Options;
-using SageCore.Utilities;
 
 namespace SageCore;
 
@@ -17,6 +16,14 @@ namespace SageCore;
 /// </summary>
 public class SageGameOptions
 {
+    /// <summary>
+    /// Gets or sets a value indicating whether to use the engine from the Zero Hour expansion pack.
+    /// </summary>
+    /// <remarks>
+    /// Default is true.
+    /// </remarks>
+    public bool UseExpansionEngine { get; set; } = true;
+
     /// <summary>
     /// Gets or sets the application options.
     /// </summary>
