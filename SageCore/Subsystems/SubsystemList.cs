@@ -7,6 +7,7 @@
 // -----------------------------------------------------------------------
 
 using System.Collections.ObjectModel;
+using SageCore.FileSystem.Ini;
 using SageCore.FileSystem.Utilities;
 
 namespace SageCore.Subsystems;
@@ -33,7 +34,23 @@ internal sealed class SubsystemList : IDisposable
         subsystem.Name = name;
         subsystem.Initialize();
 
-        // TODO: INI initialization using path1, path2, dirPath, xfer
+        Ini init = new();
+
+        if (path1 is not null)
+        {
+            init.Load(path1, IniLoadType.Overwrite, xfer);
+        }
+
+        if (path2 is not null)
+        {
+            init.Load(path2, IniLoadType.CreateOverrides, xfer);
+        }
+
+        if (dirPath is not null)
+        {
+            init.LoadDirectory(dirPath, subDirs: true, IniLoadType.Overwrite, xfer);
+        }
+
         _subsystems.Add(subsystem);
     }
 

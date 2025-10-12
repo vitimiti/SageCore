@@ -8,5 +8,6 @@
   <ItemGroup>
     <ProjectReference Include="..\SageCore.Options\SageCore.Options.csproj" />
     <ProjectReference Include="..\SageCore.FileSystem.Utilities\SageCore.FileSystem.Utilities.csproj" />
+    <ProjectReference Include="..\SageCore.FileSystem.Ini\SageCore.FileSystem.Ini.csproj" />
   </ItemGroup>
 </Project>
