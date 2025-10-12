@@ -292,7 +292,7 @@ internal class EncoderStat : HuffStat
         new Symbol() { BitsCount = 9, Code = 0x01_FD },
     ];
 
-    public void CalcStat(Span<int> groups)
+    public void CalculateStat(Span<int> groups)
     {
         Span<HuffTempStat> tempStats = stackalloc HuffTempStat[Common.HuffSymbolsCount];
         var total = MakeSortedTempStats(tempStats);
@@ -383,7 +383,7 @@ internal class EncoderStat : HuffStat
 
             if (left < nn)
             {
-                throw new InvalidOperationException($"Internal error in {nameof(EncoderStat)}.{nameof(CalcStat)}");
+                throw new InvalidOperationException($"Internal error in {nameof(EncoderStat)}.{nameof(CalculateStat)}");
             }
 
             if (bitsCount <= 8 && bitsCount15 <= 8)
