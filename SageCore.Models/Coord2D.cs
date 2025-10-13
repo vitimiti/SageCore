@@ -11,17 +11,19 @@ namespace SageCore.Models;
 /// <summary>
 /// Represents a 2D coordinate with X and Y components.
 /// </summary>
-public class Coord2D
+/// <param name="x">The X component of the coordinate.</param>
+/// <param name="y">The Y component of the coordinate.</param>
+public class Coord2D(float x, float y)
 {
     /// <summary>
     /// Gets or sets the X component of the coordinate.
     /// </summary>
-    public float X { get; set; }
+    public float X { get; set; } = x;
 
     /// <summary>
     /// Gets or sets the Y component of the coordinate.
     /// </summary>
-    public float Y { get; set; }
+    public float Y { get; set; } = y;
 
     /// <summary>
     /// Gets the length (magnitude) of the coordinate vector.
