@@ -20,7 +20,7 @@ internal sealed class ThingFactory : SubsystemBase
 
     public override void Reset() => throw new NotImplementedException();
 
-    protected override void Draw() => throw new NotImplementedException();
+    public override void Draw() => throw new NotImplementedException();
 
-    protected override void Update() => throw new NotImplementedException();
+    public override void Update() => throw new NotImplementedException();
 }

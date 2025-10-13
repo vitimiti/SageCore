@@ -22,16 +22,16 @@ internal abstract class SubsystemBase : IDisposable
 
     public abstract void Reset();
 
+    public abstract void Update();
+
+    public abstract void Draw();
+
     public void Dispose()
     {
         // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
         Dispose(disposing: true);
         GC.SuppressFinalize(this);
     }
-
-    protected abstract void Update();
-
-    protected abstract void Draw();
 
     protected virtual void Dispose(bool disposing)
     {
