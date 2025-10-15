@@ -34,4 +34,6 @@ public class Ini
     /// A lookup dictionary for list record types in INI files.
     /// </summary>
     public static readonly Dictionary<string, int> LookupListRecord = [];
+
+    public static void InitFromMultiProcess() => throw new NotImplementedException();
 }
