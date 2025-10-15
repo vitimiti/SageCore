@@ -6,6 +6,8 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using SageCore.Subsystems;
+
 namespace SageCore.FileSystem.Ini;
 
 internal static class IniObject
@@ -13,6 +15,5 @@ internal static class IniObject
     public static void ParseObjectDefinition(IniFile ini)
     {
         var name = ini.GetNextToken();
-        throw new NotImplementedException();
     }
 }

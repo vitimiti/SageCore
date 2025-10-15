@@ -10,10 +10,21 @@ namespace SageCore.Utilities;
 
 internal abstract class Xfer
 {
-    /// <summary>
-    /// Handles user-defined data processing.
-    /// </summary>
-    /// <param name="data">The data to be processed.</param>
-    /// <remarks>This method must be implemented by derived classes to define specific data handling behavior.</remarks>
-    public abstract void User(Span<byte> data);
+    public uint Version(uint version, uint currentVersion)
+    {
+        version = Implementation(version);
+        return version > currentVersion
+            ? throw new InvalidDataException(
+                $"{nameof(Xfer)}.{nameof(Version)}: Unknown version '{version}' should be no higher than '{currentVersion}'"
+            )
+            : version;
+    }
+
+    public bool Bool(bool data) => Implementation(data);
+
+    public float Real(float data) => Implementation(data);
+
+    public abstract T User<T>(T data);
+
+    protected abstract T Implementation<T>(T data);
 }
