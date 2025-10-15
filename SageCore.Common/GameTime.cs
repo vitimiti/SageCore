@@ -8,15 +8,15 @@
 
 using System.Diagnostics;
 using Microsoft.Extensions.Logging;
-using SageCore.Logging;
+using SageCore.Common.Logging;
 
-namespace SageCore.Utilities;
+namespace SageCore.Common;
 
 /// <summary>
 /// Provides timing values for the game loop, including total elapsed time and delta time between frames.
 /// </summary>
 [DebuggerDisplay("{TotalTime} (+{DeltaTime}) @ {TickRatio} ticks/stopwatch tick")]
-internal sealed class GameTime
+public sealed class GameTime
 {
     private readonly ILogger _logger;
     private readonly Stopwatch _stopwatch = new();

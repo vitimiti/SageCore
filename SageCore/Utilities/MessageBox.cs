@@ -13,7 +13,7 @@ namespace SageCore.Utilities;
 /// <summary>
 /// A simple message box implementation using SDL3.
 /// </summary>
-public sealed class MessageBox
+public static class MessageBox
 {
     /// <summary>
     /// Shows an error message box with the specified message and title.

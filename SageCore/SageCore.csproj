@@ -14,7 +14,12 @@
     <ProjectReference Include="..\SageCore.Compression\SageCore.Compression.csproj" />
     <ProjectReference Include="..\SageCore.Abstractions\SageCore.Abstractions.csproj" />
     <ProjectReference Include="..\SageCore.Attributes\SageCore.Attributes.csproj" />
-    <ProjectReference Include="..\SageCore.Generators\SageCore.Generators.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+    <ProjectReference
+      Include="..\SageCore.Generators\SageCore.Generators.csproj"
+      OutputItemType="Analyzer"
+      ReferenceOutputAssembly="false"
+    />
     <ProjectReference Include="..\SageCore.Models\SageCore.Models.csproj" />
+    <ProjectReference Include="..\SageCore.Common\SageCore.Common.csproj" />
   </ItemGroup>
 </Project>
