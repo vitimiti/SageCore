@@ -365,6 +365,7 @@ dotnet_naming_style.s_camelcase.capitalization = camel_case
 
 # Suppression to respect project's style
 dotnet_diagnostic.IDE3000.severity = none
+dotnet_diagnostic.CA1028.severity = none
 dotnet_diagnostic.SA1000.severity = none
 dotnet_diagnostic.SA1009.severity = none
 dotnet_diagnostic.SA1010.severity = none
